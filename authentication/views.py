@@ -100,7 +100,7 @@ def verify_email(request):
             )
             email.content_subtype = 'html'
             Util.send_email(email)
-            return redirect('verify-email-done',{'about':abs})
+            return redirect('verify-email-done',)
         else:
             return redirect('index')
     abs=AboutusUs.objects.first()
@@ -123,7 +123,7 @@ def verify_email_confirm(request, uidb64, token):
         user.email_is_verified = True
         user.save()
         messages.success(request, 'Your email has been verified.')
-        return redirect('verify-email-complete',{'about':abs})   
+        return redirect('verify-email-complete')   
     else:
         messages.warning(request, 'The link is invalid.')
     return render(request, 'authentication/verify_email_confirm.html',{'about':abs})
