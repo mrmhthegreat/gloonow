@@ -1,0 +1,126 @@
+{% extends "dashboard.html" %}
+{% load widget_tweaks %}
+
+{% load static %}
+{% block title %} Update Account {% endblock %}
+
+{% block content %}
+
+<section class="">
+        
+  <nav class="flex" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center  space-x-1 md:space-x-2 rtl:space-x-reverse">
+      <li class="inline-flex items-center">
+        <a href="{%url 'index'%}" class="inline-flex items-center text-sm font-medium text-white hover:text-primary dark:text-gray-400 dark:hover:text-white">
+          <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+          </svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <div class="flex items-center">
+          <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+          </svg>
+          <a href="{%url 'dashboard'%}" class="ms-1 text-sm font-medium text-white hover:text-primary md:ms-2 dark:text-gray-400 dark:hover:text-white">Dashboard</a>
+        </div>
+      </li>
+      <li aria-current="page">
+        <div class="flex items-center">
+          <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+          </svg>
+          <span class="ms-1 text-sm font-medium text-primary md:ms-2 dark:text-gray-400">Update Account</span>
+        </div>
+      </li>
+    </ol>
+  </nav>
+            
+            <div class=" flex flex-col  items-center justify-center px-6  mq825:px-0 py-8 mx-auto  lg:py-0">
+              
+                <div class="w-1/2 mq825:w-full lg:w-full  bg-bg2 rounded-lg shadow dark:border md:mt-0  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                    <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
+                         <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl ">
+                            Update Account
+                        </h1>
+                      
+                    
+                       
+
+                        <form class="space-y-4 md:space-y-6" enctype="multipart/form-data" method="post" >
+                          {% csrf_token %}
+                          <div class=' relative mq925:w-full h-60 mw-full text-left text-mini text-white font-montserrat'>
+                            <div class="absolute  mq925:w-full w-full">
+                               <img class="absolute h-60   right-0 w-2/3 mq925:w-full object-cover
+                                z-[2]" alt="" src=" {{request.user.profile_image.url}}"
+                                />
+                             
+                            </div>
+                            <div
+                            class="absolute  h-60 bottom-[0px] left-[-0.5px] mq925:w-full mq450:w-full [background:linear-gradient(89.61deg,_#203040_35.42%,#203040AB_50.52%,#25374A53_65.11%,#25374A3E_78.13%,#25374A44)] w-full flex flex-col items-start justify-start box-border max-w-full z-[3]"
+                          ></div>
+                          <div
+                          class="absolute left-10 mq450:left-5 top-1/4 mq825:top-1/6 mq450:top-10 z-[3] flex flex-col items-start justify-start gap-[24px_0px] max-w-full"
+                        > <div class="flex items-center justify-center w-full hover:bg-primary[#25334100] ">
+                          <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-50 border-2 border-gray-700 border-dashed hover:bg-primary[#25334100] rounded-lg cursor-pointer  ">
+                              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                  <svg class="w-8 h-8 mb-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                  </svg>
+                                  <p class="mb-2 text-sm text-gray-500 "><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                  <p class="text-xs text-gray-500 ">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                              </div>
+                              <input id="dropzone-file" type="file" name="profile_image" class="hidden" />
+                          </label>
+                      </div></div> </div>  
+                      
+                      
+                      
+                      <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                <div>
+                                  <label for="id_first_name" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.last_name.label}}</label>
+                          
+                       
+                                  {% render_field form.first_name  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
+                           
+                                
+                                  </div>
+                                <div>
+                                  <label for="id_last_name" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.last_name.label}}</label>
+                          
+                       
+                                  {% render_field form.last_name  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
+                            </div>
+                                <div>
+                                  <label for="id_company" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.company.label}}</label>
+                          
+                       
+                                  {% render_field form.company  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
+                                 </div>  
+                                <div>
+                                  <label for="id_phone_number" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.phone_number.label}}</label>
+                          
+                       
+                                  {% render_field form.phone_number  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
+                                  {% if form.phone_number.errors %}
+                                  <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.phone_number.errors.as_text }}</p>
+                                  {% endif %}
+                                </div>
+                                
+                            </div>
+                            <div>
+                              <label for="id_address" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.address.label}}</label>
+                          
+                       
+                              {% render_field form.address  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
+                           </div>  
+                           
+                            <button type="submit" class="w-full text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Create an account</button>
+                        
+                        </form>
+                    </div>
+                </div>
+            </div>
+          </section>
+        {%endblock%}

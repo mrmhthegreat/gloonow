@@ -1,0 +1,196 @@
+{% extends "dashboard.html" %}
+
+{% load static %}
+{% block title %} All Post For {{request.user.company}} {% endblock %}
+
+
+{%block style%}
+
+
+{%endblock style%} {% block content %}
+<nav class="flex" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center  space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li class="inline-flex items-center">
+      <a href="{%url 'index'%}" class="inline-flex items-center text-sm font-medium text-white hover:text-primary dark:text-gray-400 dark:hover:text-white">
+        <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+        </svg>
+        Home
+      </a>
+    </li>
+    <li>
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+        </svg>
+        <a href="{%url 'mybookings'%}" class="ms-1 text-sm font-medium text-white hover:text-primary md:ms-2 dark:text-gray-400 dark:hover:text-white">Dashboard</a>
+      </div>
+    </li>
+    <li aria-current="page">
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+        </svg>
+        <span class="ms-1 text-sm font-medium text-primary md:ms-2 dark:text-gray-400">All Post</span>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+
+<div
+  class="grid-cols-2 sm:grid md:grid-cols-4 gap-5  mq765:grid-cols-1 mq925:grid-cols-2 p-4 lg:grid-cols-2 "
+>
+
+
+
+
+
+{%include 'booking/myposts.html' with products=bookings %}
+
+</div>
+
+<div data-dial-init class="fixed end-6 bottom-6 group">
+ 
+  <a
+    type="button"
+    href="{%url 'createpost' %}"
+    data-dial-toggle="speed-dial-menu-bottom-right"
+    aria-controls="speed-dial-menu-bottom-right"
+    aria-expanded="false"
+    class="flex cursor-pointer block items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+  >
+    <svg
+      class="w-5 h-5 transition-transform group-hover:rotate-45"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 18 18"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 1v16M1 9h16"
+      />
+    </svg>
+    <span class="sr-only">Open actions menu</span>
+  </a>
+</div>
+
+<div class="mx-auto  container mt-10">
+  {% if page_obj.has_next %}
+
+
+  {%endif%}
+<nav aria-label="Page navigation c example">
+  <ul class="flex items-center  -space-x-px h-8 text-sm">
+    <li>
+      {% if page_obj.has_previous %}
+      <form class=""  method='GET' action="{% url 'mybookings' %}">
+        <input type='hidden' name="page"  value="{{ page_obj.previous_page_number }}">
+        
+        <button
+    
+          type="submit" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-bg2 border border-e-0 border-gray-300 rounded-s-lg hover:bg-bg hover:text-primary  "
+        >
+        <span class="sr-only">Previous</span> <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+        </svg>
+      </button>
+      </form>
+      {% endif %}
+    </li>
+    {% for page_number in paginator.page_range %}
+    
+    <li>
+      {% if page_number == page_obj.number %}
+      
+      <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 leading-tight  z-10  border border-primary text-primary bg-bg2 hover:bg-bg hover:text-primary ">{{ page_number }}</a>
+      {%else%}
+      <div aria-current="page" class="">  
+      
+      
+      
+      <form class=""  method='GET' action="{% url 'mybookings' %}">
+    
+        <input type='hidden' name="page"  value="{{  page_number  }}">
+      
+      
+        <button
+    
+          type="submit" class="flex cursore-pointer items-center justify-center px-3 h-8 leading-tight  text-gray-500 bg-bg border border-gray-300 hover:bg-bg2 hover:text-primary  "
+        >
+
+        {{ page_number }}
+      </button>
+      </form>
+    </div>
+      {% endif %} 
+
+    </li>
+  {% endfor %}
+    <li>
+      
+  
+  {% if page_obj.has_next %}
+  <form class=""  method='GET' action="{% url 'mybookings' %}">
+    <input type='hidden' name="page"  value="{{ page_obj.next_page_number }}">
+  
+
+ 
+    <button
+class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-bg2 border border-gray-300 rounded-e-lg hover:bg-bg hover:text-primary dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+      type="submit"
+    >
+    <span class="sr-only">Next</span>
+    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+    </svg>
+  </button>
+  </form>
+  {% endif %}</li>
+   
+  </ul>
+</nav>
+
+
+{%endblock%} {%block script%}
+<script type="text/javascript">
+  
+  
+  function deactivate(event,t) {
+    $.ajax(
+      {
+          type:"POST",
+          url: "{%url 'deactivate' %}",
+          data:{
+                   slug: event,
+                   tr: t,
+                   csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": '{{ csrf_token }}',  // don't forget to include the 'getCookie' function
+          },
+          success: function( data ) 
+          {
+            
+            location.reload();
+          }
+       })
+
+
+
+
+
+
+   // var li=[]
+   // li.forEach(function(time) {
+   //   let listItem = document.createElement("li");
+
+  }
+</script>
+
+{%endblock script%}

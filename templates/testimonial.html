@@ -1,0 +1,129 @@
+{% load static %}
+
+<div
+  class="grid-cols-1 sm:grid md:grid-cols-1 mq925:grid-cols-1 p-4 lg:grid-cols-1 container mx-auto"
+>
+  <div
+    class="text-burlywood-100 font-semibold mq450:text-burlywood-100 text-xl mq450:leading-[21px]"
+  >
+    Testimonials
+  </div>
+  <div
+    class="flex flex-col items-start justify-start pt-0 px-0 pb-[22.40000000000009px] box-border gap-[53.6px_0px] max-w-full text-base text-gainsboro mq925:gap-[27px_0px]"
+  >
+    <div class="flex flex-col items-start justify-start max-w-full">
+      <div
+        class="flex flex-row items-start justify-start pt-0 px-0 pb-[9.800000000000182px] box-border max-w-full text-16xl text-white"
+      >
+        <h2
+          class="m-0 relative text-inherit leading-[45.5px] capitalize font-semibold font-inherit mq450:text-2xl mq450:leading-[27px] mq925:text-9xl mq925:leading-[36px]"
+        >
+          What Our Clients Say!
+        </h2>
+      </div>
+      <div class="flex flex-col items-start justify-start">
+        <div class="relative leading-[27.2px]">
+          Discover the experiences and stories of our satisfied clients who have
+          chosen eSalon for
+        </div>
+        <div class="relative leading-[27.2px] z-[1] mt-[-0.1px]">
+          their salon and parlour needs. Read their testimonials and find out
+          how our platform has
+        </div>
+      </div>
+      <div class="relative leading-[27.2px] inline-block max-w-full z-[2]">
+        transformed their beauty and wellness journeys.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="carousel-container mb-10 container mx-auto gap-5">
+  {%for product in review%}
+
+  <div
+    class="mx-3 mt-6 slide self-start w-4/5 mq925:w-fit md:w-11/12 rounded-8xs bg-bg2 text-surface shadow-secondary-1"
+  >
+    <div class="mb-6 flex justify-center mt-6">
+      <img
+        src="{{product.user.profile_image.url}}"
+        class="w-32 h-32 rounded-full object-cover shadow-lg dark:shadow-black/20"
+      />
+    </div>
+   
+      <div class="mb-0 flex justify-start p-6 text-primary">
+          <div class="flex items-center space-x-1 rtl:space-x-reverse">
+              {%if product.rating >= 1 %}
+              <svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+              </svg>
+              {%else%}  
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if product.rating > 0 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+                  <path fill="currentColor"
+                    d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+                </svg>
+{%endif%}
+{%if product.rating >= 2 %}
+<svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+</svg>
+{%else%}  
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if product.rating > 1 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+<path fill="currentColor"
+d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+</svg>
+{%endif%}
+{%if product.rating >= 3 %}
+<svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+</svg>
+{%else%}  
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if product.rating > 2 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+<path fill="currentColor"
+d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+</svg>
+{%endif%}
+{%if product.rating >= 4 %}
+<svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+</svg>
+{%else%}  
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if product.rating > 3 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+<path fill="currentColor"
+d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+</svg>
+{%endif%}
+{%if product.rating >= 5 %}
+<svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+</svg>
+{%else%}  
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if product.rating > 4 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+<path fill="currentColor"
+d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+</svg>
+{%endif%}
+          </div>
+          <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">{{product.rating}}</span>
+      </div>
+    <div class="p-6 text-white">
+      <p class="mb-4 text-base leading-[30.6px]">“{{product.message}}”</p>
+    </div>
+
+    <div class="flex justify-end mt-6 pr-3">
+      <div
+        class="text-xl text-white leading-[26px] font-semibold mq450:text-base mq450:leading-[21px]"
+      >
+        {{product.user.first_name}}
+      </div>
+    </div>
+
+    <div class="flex justify-end pr-3 mb-2">
+      <div class="block leading-[23.8px] text-sm text-gainsboro">
+        {{product.user.last_name}}
+      </div>
+    </div>
+  </div>
+
+  {%endfor%}
+</div>

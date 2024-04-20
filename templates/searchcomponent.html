@@ -1,0 +1,111 @@
+{% load static %}
+{% load mytags %}
+
+<section
+  class="quote-form z-[5] relative p-8 container mx-auto rounded-lg bg-bg2 container"
+>
+      <form class=""  method='POST' action="{% url 'postlist' %}">
+  <div class="grid gap-6 md:grid-cols-3 mq825:grid-cols-2 mq450:grid-cols-1">
+                      
+       <div class="relative">
+        {% csrf_token %} <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+          />
+        </svg>
+      </div>
+      <input
+        id="dropdownSearchButton"
+        data-dropdown-toggle="dropdownSearch"
+        placeholder="Select Service"
+        value="Select Service"
+        class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full ps-10 p-2.5 p-4"
+        type="button"
+      />
+    </div>
+
+    <!-- Dropdown menu -->
+    <div
+      id="dropdownSearch"
+      class="z-10 hidden bg-bg2 rounded-lg mq450:w-11/12 shadow w-1/4 md:w-1/4 mq825:w-2/4 shadow w-60 text-white"
+    >
+    
+      <ul
+        class="h-48 pb-3 overflow-y-auto text-sm text-white "
+        aria-labelledby="dropdownSearchButton"
+        id="selected"
+      >
+      {%for id,name in forms.services.field.choices %}
+      <li class="text-white hover:text-black">
+        <div class="flex items-center p-2 hover:bg-burlywood-100">
+           <input
+            id="id_services_{{id}}"
+            type="checkbox" name="services"
+            value="{{id}}" 
+            {% if id|tostr in forms.data|timeslist   %}
+            checked
+        {% endif %}
+
+            class="w-4 h-4 text-burlywood-100 bg-gray-100 border-burlywood-100 rounded focus:ring-burlywood-100 focus:ring-2"
+          />
+
+          
+          <label
+            for="id_services_{{id}}"
+            class=" id_services_{{id}} w-full ms-2 text-sm font-medium"
+            >{{name}}</label
+          >
+        </div>
+      </li>
+      {%endfor%}
+      
+      </ul>
+    </div>
+
+    <div class="relative">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none"
+      >
+        <svg
+          class="w-4 h-4 text-white dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+          />
+        </svg>
+      </div>
+     
+        <input
+       
+          type="text"
+          id="datePicker"
+          {%if form.data.dates%}
+          value= "{{form.data.dates}}"
+          {%endif%}
+          placeholder="Select Date"  name="dates" 
+          class="input bg-slategray border ps-10 p-4 border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+        />
+    
+       
+    </div>
+    <button
+    type="submit" class="bg-burlywood-100 text-center hover:drop-shadow-[0_5px_5px_#CCA87662] text-white font-bold py-2 rounded mq765:w-full "
+    >
+      Filter
+    </button>
+  </div>
+</form>
+</section>

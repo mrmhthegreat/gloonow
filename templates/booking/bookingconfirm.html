@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Receipt</title>
+</head>
+<body>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#f3f3f3">
+        <tr>
+            <td align="center">
+                <table cellpadding="0" cellspacing="0" border="0" width="600" style="border-collapse: collapse;">
+                    <tr>
+                        <td align="center" bgcolor="#ffffff" style="padding: 40px 0;">
+                            <h1>Booking Confirm</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 20px;">
+                            <p>Dear {{user.first_name}} {{user.last_name}},</p>
+                            <p>Thank you for your booking. Below is your receipt:</p>
+                            <ul>
+                                <li><strong>Booking At:</strong> {{salon}}</li>
+                                <li><strong>Check-in Date:</strong> {{date}}</li>
+                                <li><strong>Check-in Time:</strong>{{time}}</li>
+                                <li><strong>Services :</strong>{{services}}</li>
+
+                                <li><strong>Salon Address:</strong> {{address}}</li>
+                                <li><strong>Salon Phone:</strong> {{number}}</li>
+                                <li><strong>Salon EMail:</strong> {{mail}}</li>
+                            </ul>
+                            <p>Your Booking  has been Approved By Salon.</p>
+                            <p>If you have any questions or concerns about your booking, please don't hesitate to <a href="{%url 'contactus' %}">contact us</a>.</p>
+                            <p>Thank you for choosing us. We hope you have a pleasant stay!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="center" style="padding: 20px;">
+                            <p><em>This is an automated message. Please do not reply.</em></p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!-- templates/index.html -->
+
+{% extends "_base.html" %}{% load static %}
+
+
+{% load widget_tweaks %}
+{% load mytags %}
+
+
+{% block title %} All Post  {% endblock %}
+
+ {%block style%}
+ 
+ <link rel="stylesheet" href="{%static 'src/slick.min.css' %}">
+ <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+{% endblock style %}
+{% block content %}
+{% include "horeero.html" %}
+{% include "searchcomponent.html" %}
+
+
+<div class='mt-12 p-12'></div>
+
+
+
+<div class="mx-auto  container">
+<div class="grid-cols-2 sm:grid md:grid-cols-4 gap-5  mq765:grid-cols-1 mq925:grid-cols-2 p-4 lg:grid-cols-2 ">
+ 
+
+
+  {% include 'booking/bookitemforuser.html' with products=products %}
+  
+</div>
+</div>
+
+
+
+<div class="mx-auto  container mt-10">
+  {% if page_obj.has_next %}
+
+
+  {%endif%}
+<nav aria-label="Page navigation c example">
+  <ul class="flex items-center  -space-x-px h-8 text-sm">
+    <li>
+      {% if page_obj.has_previous %}
+      <form class=""  method='GET' action="{% url 'postlist' %}">
+        <input type='hidden' name="page"  value="{{ page_obj.previous_page_number }}">
+        {%for id,name in forms.services.field.choices %}
+    
+        {% if id|tostr in forms.data|timeslist   %}
+        <input
+        id="id_services_{{id}}"
+        type="hidden" name="services"
+        value="{{id}}" 
+       
+        
+    
+      />{% endif %}    {%endfor%}
+    
+      <input
+           
+      type="hidden"
+      {%if form.data.dates%}
+      value= "{{form.data.dates}}"
+      {%endif%} name="dates" 
+     />
+        <button
+    
+          type="submit" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-bg2 border border-e-0 border-gray-300 rounded-s-lg hover:bg-bg hover:text-primary  "
+        >
+        <span class="sr-only">Previous</span> <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+        </svg>
+      </button>
+      </form>
+      {% endif %}
+    </li>
+    {% for page_number in paginator.page_range %}
+    
+    <li>
+      {% if page_number == page_obj.number %}
+      
+      <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 leading-tight  z-10  border border-primary text-primary bg-bg2 hover:bg-bg hover:text-primary ">{{ page_number }}</a>
+      {%else%}
+      <div aria-current="page" class="">  
+      
+      
+      
+      <form class=""  method='GET' action="{% url 'postlist' %}">
+    
+        <input type='hidden' name="page"  value="{{  page_number  }}">
+        {%for id,name in forms.services.field.choices %}
+    
+        {% if id|tostr in forms.data|timeslist   %}
+        <input
+        id="id_services_{{id}}"
+        type="hidden" name="services"
+        value="{{id}}" 
+       
+        
+    
+    
+        class=""
+      />{% endif %}    {%endfor%}
+    
+      <input
+           
+      type="hidden"
+      {%if form.data.dates%}
+      value= "{{form.data.dates}}"
+      {%endif%} name="dates" 
+     />
+        <button
+    
+          type="submit" class="flex cursore-pointer items-center justify-center px-3 h-8 leading-tight  text-gray-500 bg-bg border border-gray-300 hover:bg-bg2 hover:text-primary  "
+        >
+
+        {{ page_number }}
+      </button>
+      </form>
+    </div>
+      {% endif %} 
+
+    </li>
+  {% endfor %}
+    <li>
+      
+  
+  {% if page_obj.has_next %}
+  <form class=""  method='GET' action="{% url 'postlist' %}">
+    <input type='hidden' name="page"  value="{{ page_obj.next_page_number }}">
+    {%for id,name in forms.services.field.choices %}
+
+    {% if id|tostr in forms.data|timeslist   %}
+    <input
+    id="id_services_{{id}}"
+    type="hidden" name="services"
+    value="{{id}}" 
+   
+    
+
+
+    class=""
+  />{% endif %}    {%endfor%}
+
+  <input
+       
+  type="hidden"
+  {%if form.data.dates%}
+  value= "{{form.data.dates}}"
+  {%endif%} name="dates" 
+ />
+    <button
+class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-bg2 border border-gray-300 rounded-e-lg hover:bg-bg hover:text-primary dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+      type="submit"
+    >
+    <span class="sr-only">Next</span>
+    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+    </svg>
+  </button>
+  </form>
+  {% endif %}</li>
+   
+  </ul>
+</nav>
+
+</div>
+
+
+ 
+{% include "foot.html" %}
+
+      {% endblock content %} {%block script%}
+ 
+     
+      <script src="{%static 'src/jquery.min.js' %}"></script>
+      <script src="{%static 'src/slick.min.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+          <script>
+  
+  
+  
+            function handleCheckboxChange(event) {
+              const selectedItemsContainer1 = document.getElementById(
+                "dropdownSearchButton"
+              );
+              const selectedItemsContainer = document.getElementById("selected");
+              const selectedItems = Array.from(
+                document.querySelectorAll('input[name="services"]:checked')
+              ).map((checkbox) => document.getElementsByClassName('id_services_'+checkbox.value)[0].textContent);
+          
+              // Clear previous content
+              selectedItemsContainer1.value = selectedItems.toString();
+          
+              // Display selected items
+            }
+            const checkboxes = document.querySelectorAll('input[name="services"]');
+            checkboxes.forEach((checkbox) =>
+              checkbox.addEventListener("change", handleCheckboxChange)
+            );
+    $(".carousel-container").slick({
+      autoplay: true,
+      slidesToShow: 3,
+      dots: true,
+  dotsClass: 'slick-dots mx-auto',centerPadding: '50px',slidesToScroll: 1, speed: 350,
+      responsive: [
+      {
+      breakpoint: 1340,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+    });
+
+    flatpickr("#datePicker", {
+      dateFormat: "d M Y", 
+    disableMobile:true,
+      
+      // Format for displaying day name (short), month (short), and day of the month
+      minDate: "today", // Start from today's date
+      maxDate: new Date().fp_incr(7), // Allow selection within the next 7 days
+      static: true, // Prevent the calendar from closing on date selection
+    });
+  </script>
+  {%endblock script%}

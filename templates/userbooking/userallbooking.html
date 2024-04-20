@@ -1,0 +1,231 @@
+{% extends "dashboard.html" %}
+
+{% load static %}
+{% block title %}  My Bookings {% endblock %}
+
+{%block style%}
+
+
+{%endblock style%} {% block content %}
+<nav class="flex" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center  space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li class="inline-flex items-center">
+      <a href="{%url 'index'%}" class="inline-flex items-center text-sm font-medium text-white hover:text-primary dark:text-gray-400 dark:hover:text-white">
+        <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+        </svg>
+        Home
+      </a>
+    </li>
+    
+    <li aria-current="page">
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+        </svg>
+        <span class="ms-1 text-sm font-medium text-primary md:ms-2 dark:text-gray-400">My Bookings</span>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+
+<div
+  class="mt-10"
+>
+
+
+
+
+<div
+  class="grid-cols-2 sm:grid md:grid-cols-4 gap-5  mq765:grid-cols-1 mq925:grid-cols-2 p-4 lg:grid-cols-2 "
+>
+
+
+
+{%include 'booking/userlistitem.html' with products=bookings %}
+
+</div>
+</div>
+
+
+<div class="mx-auto  container mt-10">
+    <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
+        <span class="text-sm font-normal text-white dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing  {{page_obj}}</span>
+        <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+          <li>
+              {% if page_obj.has_previous %}
+              <form class=""  method='GET' action="{% url 'mybooking' %}">
+                <input type='hidden' name="page"  value="{{ page_obj.previous_page_number }}">
+                
+                <button
+            
+                  type="submit" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-bg2 border border-e-0 border-gray-300 rounded-s-lg hover:bg-bg hover:text-primary  "
+                >
+                <span class="sr-only">Previous</span> <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                </svg>
+              </button>
+              </form>
+              {% endif %}
+            </li>
+            {% for page_number in paginator.page_range %}
+            
+            <li>
+              {% if page_number == page_obj.number %}
+              
+              <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 leading-tight  z-10  border border-primary text-primary bg-bg2 hover:bg-bg hover:text-primary ">{{ page_number }}</a>
+              {%else%}
+              <div aria-current="page" class="">  
+              
+              
+              
+              <form class=""  method='GET' action="{% url 'mybooking' %}">
+            
+                <input type='hidden' name="page"  value="{{  page_number  }}">
+              
+              
+                <button
+            
+                  type="submit" class="flex cursore-pointer items-center justify-center px-3 h-8 leading-tight  text-gray-500 bg-bg border border-gray-300 hover:bg-bg2 hover:text-primary  "
+                >
+        
+                {{ page_number }}
+              </button>
+              </form>
+            </div>
+              {% endif %} 
+        
+            </li>
+          {% endfor %}
+            <li>
+              
+          
+          {% if page_obj.has_next %}
+          <form class=""  method='GET' action="{% url 'mybooking' %}">
+            <input type='hidden' name="page"  value="{{ page_obj.next_page_number }}">
+          
+        
+         
+            <button
+        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-bg2 border border-gray-300 rounded-e-lg hover:bg-bg hover:text-primary dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              type="submit"
+            >
+            <span class="sr-only">Next</span>
+            <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+            </svg>
+          </button>
+          </form>
+          {% endif %}</li>
+        </ul>
+    </nav>
+    <input   id="mu" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" type="hidden">
+   
+
+    <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-md max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-bg2 rounded-lg shadow ">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-4 md:p-5 rounded-t">
+                  <h3 class="text-xl font-semibold text-white">
+                     Give Review
+                  </h3>
+                  <button type="button" class="end-2.5 text-primary bg-transparent hover:bg-burlywood-100 hover:text-black rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="authentication-modal">
+                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                      </svg>
+                      <span class="sr-only">Close modal</span>
+                  </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-2 md:p-5">
+                    <form
+                    class="sspace-y-4"
+                    method="POST"
+                    action="{% url 'addreviews' %}"
+                  >
+                    {% csrf_token %} <div>
+
+                      <input type="hidden" name="bid" id="bid">
+                          <label for="rating" class="block mb-2 text-sm font-medium text-white dark:text-white">Rate</label>
+                          <select id="rating" name="rating" class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+                            <option selected value="5">Excellent</option>
+                            <option value="4">Good</option>
+                            <option value="3">OK</option>
+                            <option value="2">Poor States</option>
+                        
+                             <option value="1">Bad</option>
+                          </select>
+                     
+                        </div>
+                      <div class="mt-2">
+                        <label
+                        for="id_message"
+                        class="block mb-2 text-sm font-medium text-white"
+                        >Your message</label
+                      >
+                      <textarea
+                        id="id_message"
+                        rows="4"
+                        name="message"
+                        maxlength="5000"
+                        class="block p-2.5 w-full text-sm text-white bg-slategray rounded-lg border border-gray-700 focus:ring-1 focus:ring-primary focus:border-primary"
+                        placeholder="Write your thoughts here..."
+                      ></textarea> </div>
+
+
+                      <button type="submit" class="w-full mt-2 text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Post</button>
+                    
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div> 
+{%endblock%} {%block script%}
+<script type="text/javascript">
+  
+
+  function review(event) {
+    const targetEl = document.getElementById('mu');
+    const b = document.getElementById('bid');
+    b.value=event;
+    targetEl.click();
+
+  }
+
+  function cancle(event) {
+    $.ajax(
+      {
+          type:"POST",
+          url: "{%url 'canclebook' %}",
+          data:{
+                   slug: event,
+                  
+                   csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": '{{ csrf_token }}',  // don't forget to include the 'getCookie' function
+          },
+          success: function( data ) 
+          {
+            
+            location.reload();
+          }
+       })
+
+
+
+
+
+
+   // var li=[]
+   // li.forEach(function(time) {
+   //   let listItem = document.createElement("li");
+
+  }
+</script>
+
+{%endblock script%}

@@ -1,0 +1,409 @@
+{% extends "_base.html" %}
+{% load mytags %}{% load static %}
+
+{% block title %}  Book {{post.slug }}{% endblock %}
+{%block style%}
+
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+{% endblock style %} {% block content %}
+
+
+<section class="[background:linear-gradient(89.61deg,_#203040_35.42%,#203040C9_50.52%,#25374A98_65.11%,#25374A98_78.13%,#25374A73)]">
+    <div
+    class="grid-cols-1 sm:grid md:grid-cols-1 mq925:grid-cols-1 p-4 lg:grid-cols-1 container mx-auto"
+  >
+    <div
+      class="text-burlywood-100 font-semibold mq450:text-burlywood-100 text-xl mq450:leading-[21px]"
+    >
+      How It's Work
+    </div>
+    <div
+      class="flex flex-col items-start justify-start pt-0 px-0 pb-[22.40000000000009px] box-border gap-[53.6px_0px] max-w-full text-base text-gainsboro mq925:gap-[27px_0px]"
+    >
+      <div class="flex flex-col items-start justify-start max-w-full">
+        <div
+          class="flex flex-row items-start justify-start pt-0 px-0 pb-[9.800000000000182px] box-border max-w-full text-16xl text-white"
+        >
+          <h2
+            class="m-0 relative text-inherit leading-[45.5px] capitalize font-semibold font-inherit mq450:text-2xl mq450:leading-[27px] mq925:text-9xl mq925:leading-[36px]"
+          >
+            Four Steps for Getting an Appointment
+          </h2>
+        </div>
+        <div class="flex flex-col items-start justify-start">
+          <div class="relative leading-[27.2px]">
+            Start your journey by exploring our wide range of salon and parlour
+            services.
+          </div>
+          <div class="relative leading-[27.2px] z-[1] mt-[-0.1px]">
+            From haircuts to facials, and nails to massages, we have it all.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <div class=" flex flex-col  items-center justify-center px-6 mq825:px-0 py-8 mx-auto  lg:py-0">
+        
+        <div class="w-fit mq825:w-full lg:w-fit  bg-bg2 rounded-lg shadow dark:border md:mt-0  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class=' relative mq925:w-full h-60 mw-full text-left text-mini text-white font-montserrat'>
+                <div class="absolute  mq925:w-full w-full">
+                   <img class="absolute h-60   right-0 w-2/3 mq925:w-full object-cover
+                    z-[2]" alt="" src="{{post.user.profile_image.url}}"
+                    />
+                 
+                </div>
+                <div
+                class="absolute  h-60 bottom-[0px] left-[-0.5px] mq925:w-full mq450:w-full [background:linear-gradient(89.61deg,_#203040_35.42%,#203040AB_50.52%,#25374A53_65.11%,#25374A3E_78.13%,#25374A44)] w-full flex flex-col items-start justify-start box-border max-w-full z-[3]"
+              ></div>
+
+              <div
+              class="absolute left-10 mq450:left-5 top-1/4 mq825:top-1/6 mq450:top-10 z-[3] flex flex-col items-start justify-start gap-[24px_0px] max-w-full"
+            >
+              <div
+                class="flex flex-col items-start justify-start gap-[7px_0px] max-w-full"
+              >
+               
+              <div
+              class="text-burlywood-100 font-semibold mq450:text-burlywood-100 text-xl mq450:leading-[21px]"
+            >
+{{post.user.company}}   
+
+</div> 
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white">
+              Book Now
+            </h1>
+            
+            </div>
+        </div>
+
+              </div>
+           
+           
+           
+             <div class="p-6 space-y-4 md:space-y-6 sm:p-8 ">
+                
+                <div
+                class="text-burlywood-100 font-semibold mq450:text-burlywood-100 text-xl mq450:leading-[21px]"
+              >
+                Salon Details
+              </div>           
+              <div class=" pb-5">
+         
+          
+    
+                <div class="flex items-center mt-2.5 mb-5">
+                    <div class="flex items-center space-x-1 rtl:space-x-reverse">
+                      {%if post.user.rating >= 1 %}
+                      <svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                      </svg>
+                      {%else%}  
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if post.user.rating > 0 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+                          <path fill="currentColor"
+                            d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+                        </svg>
+  {%endif%}
+  {%if post.user.rating >= 2 %}
+  <svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+      <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+  </svg>
+  {%else%}  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if post.user.rating > 1 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+      <path fill="currentColor"
+        d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+    </svg>
+  {%endif%}
+  {%if post.user.rating >= 3 %}
+  <svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+      <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+  </svg>
+  {%else%}  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if post.user.rating > 2 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+      <path fill="currentColor"
+        d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+    </svg>
+  {%endif%}
+  {%if post.user.rating >= 4 %}
+  <svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+      <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+  </svg>
+  {%else%}  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if post.user.rating > 3 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+      <path fill="currentColor"
+        d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+    </svg>
+  {%endif%}
+  {%if post.user.rating >= 5 %}
+  <svg class="w-4 h-4 text-yellow-300 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+      <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+  </svg>
+  {%else%}  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960" class="w-5 {%if post.user.rating > 4 %} text-yellow-300 {%else%} text-gray-200 {%endif%}">
+      <path fill="currentColor"
+        d="m480 757 157 95-42-178 138-120-182-16-71-168v387ZM233 976l65-281L80 506l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+    </svg>
+  {%endif%}
+                </div>
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">{{post.user.rating}}</span>
+            </div>
+                <span class="text-3xl font-bold text-white mb-1">{{post.user.company}}</span>
+                
+              <div class="flex items-center justify-between mb-2">
+               
+                <a href="#">
+                  <h5 class="text-md font-medium tracking-tight text-gainsboro ">{{post.address}}</h5>
+              </a>   <svg class="w-6 h-6 pr-1 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 14h0a7 7 0 1 0-11.5 0h0l.1.3.3.3L12 21l5.1-6.2.6-.7.1-.2Z"/>
+              </svg></div>
+              <h5 class="text-md font-medium tracking-tight text-gainsboro ">Phone: {{post.user.phone_number}}</h5>
+              <h5 class="text-md font-medium tracking-tight text-gainsboro ">Email: {{post.user.email}}</h5>
+              {%if post.message%}
+              <h6 class="text-md font-medium tracking-tight text-gainsboro ">{{post.message}}</h6>
+{%endif%}
+            </div>  
+              
+              
+<h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white">
+    Book POST
+</h1>
+
+
+
+                <form class="space-y-4 md:space-y-6" method="POST" action="">
+
+                  {% csrf_token %}
+                   
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+
+
+
+
+                      <input type="hidden" name="slug" value="{{post.slug}}"/>
+
+
+                        <div>
+                            <label for="first_name" class="block mb-2 text-sm font-medium text-white dark:text-white">First name</label>
+                            <input name="first_name" type="text" id="first_name" class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 " value="{{request.user.first_name}}" placeholder="John" required />
+                        </div>
+                        <div>
+                            <label for="last_name" class="block mb-2 text-sm font-medium text-white dark:text-white">Last name</label>
+                            <input name='last_name' type="text" id="last_name" class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 " value="{{request.user.last_name}}" placeholder="Doe" required />
+                        </div>
+                      
+                        <div>
+                          <label for="phone" class="block mb-2 text-sm font-medium text-white dark:text-white">Phone number</label>
+                          <input 
+                    
+                    type="tel" id="phone" name='phone' class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 " placeholder="123-45-678" value="{{request.user.phone_number}}"  required />
+                      </div>  
+
+
+
+
+
+
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      <div>
+                        <label for="datePicker" class="block mb-2 text-sm font-medium text-white dark:text-white">Date</label>
+                       
+                      <input
+         
+                      type="text"
+                      id="datePicker"
+                   
+                      placeholder="Select Date"  name="dates" 
+                      class="input bg-slategray border ps-10  border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+                    />
+                  </div>  
+                        
+                    </div>
+                  
+                    <label for="dropdownSearchButton3" class="block mb-2 text-sm font-medium text-white dark:text-white">Service</label>
+                       
+                    <div class="relative">
+                      <div
+                      class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none"
+                    >
+                      <svg
+                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      id="dropdownSearchButton3"
+                      data-dropdown-toggle="dropdownSearch2"
+                      placeholder="Select Service"
+                      value="Select Service"
+                      
+                      class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full ps-10 p-2.5 p-4"
+                      type="button"
+                    />
+                  </div>
+                  <!-- Dropdown menu -->
+                  <div
+                    id="dropdownSearch2"
+                    class="z-10 hidden bg-bg2 rounded-lg mq450:w-11/12 shadow w-1/4 md:w-1/4 mq825:w-2/4 shadow w-60 text-white"
+                  >
+                  
+                    <ul
+                      class="h-48 pb-3 overflow-y-auto text-sm text-white "
+                      aria-labelledby="dropdownSearchButton3"
+                      id="selected"
+                    >
+                    {%for id in post.services.all %}
+                    <li class="text-white hover:text-black">
+                      <div class="flex items-center p-2 hover:bg-burlywood-100">
+                         <input
+                          id="id_services_{{id.id}}"
+                          type="checkbox" name="services"
+                          value="{{id.id}}" 
+                         
+              
+                          class="w-4 h-4 text-burlywood-100 bg-gray-100 border-burlywood-100 rounded focus:ring-burlywood-100 focus:ring-2"
+                        />
+              
+                        
+                        <label
+                          for="id_services_{{id.id}}"
+                          class="id_services_{{id.id}} w-full ms-2 text-sm font-medium"
+                          >{{id.name}}</label
+                        >
+                      </div>
+                    </li>
+                    {%endfor%}
+                    
+                    </ul>
+                  </div>
+                
+                
+                  <ul id="times"  class="grid w-full gap-6 grid-cols-3 mq450:grid-cols-3  mq380:grid-cols-1 mq449:grid-cols-2 md:grid-cols-3">
+                      
+                      
+                  </ul>
+                  
+                    <label for="message" class="block mb-2 text-sm font-medium text-white">Your message</label>
+                    <textarea id="message" name='message' rows="4" class="block p-2.5 w-full text-sm text-white bg-slategray rounded-lg border border-gray-700 focus:ring-1 focus:ring-primary focus:border-primary " placeholder="Write your thoughts here..."></textarea>
+
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                          <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-primary rounded bg-gray-50 text-primary focus:ring-3 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="">
+                        </div>
+                        <div class="ml-3 text-sm">
+                          <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a class="font-medium text-primary hover:underline " href="{%url 'terms' %}">Terms and Conditions</a></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Book Now</button>
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+  </section>
+  <li class='hidden'><input type="hidden" id=""  value="" class="hidden peer hidden"> <label for=""   class="hidden inline-flex items-center bg-slategray justify-between w-full p-3 text-gray-500  border border-gray-700 rounded-lg cursor-pointer bg-slategray  peer-checked:border-primary peer-checked:text-primary hover:text-white hover:bg-slategray"> <svg class="w-6 h-6 ms-3  mr-2 hidden peer-checked:text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24">  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></label></li> 
+                
+{% endblock content %}{%block script%} 
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
+<script type="text/javascript">
+  
+  
+  function handleCheckboxChange2(event) {
+    const selectedItemsContainer1 = document.getElementById(
+      "dropdownSearchButton3"
+    );
+    const selectedItemsContainer = document.getElementById("selected");
+    const selectedItems = Array.from(
+      document.querySelectorAll('input[name="services"]:checked')
+    ).map((checkbox) => document.getElementsByClassName('id_services_'+checkbox.value)[0].textContent);
+
+    // Clear previous content
+    selectedItemsContainer1.value = selectedItems.toString();
+
+    // Display selected items
+  }
+  const checkboxes2 = document.querySelectorAll('input[name="services"]');
+  checkboxes2.forEach((checkbox) =>
+  checkbox.addEventListener("change", handleCheckboxChange2)
+  );
+  function handleCheckboxChange(event) {
+    let selectedItemsContainer = document.getElementById("times");
+    selectedItemsContainer.innerHTML='<div role="status"><svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg><span class="sr-only">Loading...</span></div>';
+    dates = document.getElementById("datePicker");
+    var b=dates.value;
+    $.ajax(
+      {
+          type:"POST",
+          url: "{%url 'getimese' %}",
+          data:{
+                   slug: '{{post.slug}}',
+                   dates: b,
+                   csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": '{{ csrf_token }}',  // don't forget to include the 'getCookie' function
+          },
+          success: function( data ) 
+          {
+            selectedItemsContainer.innerHTML=data;
+
+          }
+       })
+
+
+
+
+
+
+   // var li=[]
+   // li.forEach(function(time) {
+   //   let listItem = document.createElement("li");
+
+  }
+  const checkboxes = document.querySelectorAll('input[name="dates"]');
+  checkboxes.forEach((checkbox) =>checkbox.addEventListener("change", handleCheckboxChange));
+ 
+            
+       
+  
+  flatpickr("#datePicker", {
+    dateFormat: "Y-m-d", 
+    disableMobile:true,
+    enable:{{times.datesa|safe }},
+    
+    static: true, // Prevent the calendar from closing on date selection
+  });
+</script>
+{%endblock script%}

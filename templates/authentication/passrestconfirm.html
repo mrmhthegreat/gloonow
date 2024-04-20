@@ -1,0 +1,54 @@
+{% extends "_base.html" %}{% load static %}
+{% block title %}  Rest Password {% endblock %}
+
+{% block content %} 
+
+
+<section class="h-screen  [background:linear-gradient(89.61deg,_#203040_35.42%,#203040C9_50.52%,#25374A98_65.11%,#25374A98_78.13%,#25374A73)]">
+
+        <div class="flex flex-col items-center justify-center px-6 py-8  mq825:px-0 mx-auto md:h-screen lg:py-0">
+            <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white dark:text-white">
+                <img class="w-8 h-8 mr-2" src="{{about.logoimage.url}}" alt="{{about.company}}">
+                {{about.company}}    
+            </a>
+            <div class="w-full bg-bg2  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white">
+                        Rest Password
+                    </h1>
+                    <form class="space-y-4 md:space-y-6" method="post" >
+                      
+                            {% csrf_token %}
+                            <div>
+                                <label for="id_new_password1" class="block mb-2 text-sm font-medium text-white  ">New Password</label>
+                                <input type="password" name="new_password1" autocomplete="new-password"  aria-describedby="id_new_password1_helptext" id="id_new_password1" class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 " placeholder="*******" required="">
+                                
+                                <p  class="mt-2 text-sm text-gainsboro">Password Instructions    <a data-popover-target="id_new_password1_helptext" type="button" class="font-medium text-primary hover:underline dark:text-blue-500"> Check</a></p>
+
+                              </div>  
+                            <div>
+                                <label for="id_new_password2" class="block mb-2 text-sm font-medium text-white  ">Confirm New Password</label>
+                                <input  type="password" name="new_password2" autocomplete="new-password" required="" id="id_new_password2" class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 " placeholder="*****" >
+                                
+                                
+                                {% if form.new_password2.errors %}
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.new_password2.errors.as_text }}</p>
+                                {% endif %}
+                           </div>  
+                            <button type="submit" class="w-full text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Update</button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+  </section>
+  <div data-popover id="id_new_password1_helptext" role="tooltip" class="absolute z-10 bg-bg2 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300  200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+    <div class="px-3 py-2 bg-bg2  rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
+        <h3 class="font-semibold text-white dark:text-white">Password Instructions</h3>
+    </div>
+    <div class="px-3 py-2 text-white">
+        <p>{{form.new_password1.help_text}}</p>
+    </div>
+    <div data-popper-arrow></div>
+</div>
+{% endblock content %}

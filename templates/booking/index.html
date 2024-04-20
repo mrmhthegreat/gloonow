@@ -1,0 +1,108 @@
+<!-- templates/index.html -->
+
+{% extends "_base.html" %}{% load static %}
+{% load mytags %}
+{% block title %} Glow {% endblock %}
+
+ {%block style%}
+ 
+ <link rel="stylesheet" href="{%static 'src/slick.min.css' %}">
+ <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+{% endblock style %}
+{% block content %}
+{% include "horeero.html" with hasbutton=True%}
+{% include "searchcomponent.html" with form=froms.dates %}
+
+
+<div class='mt-12 p-12'></div>
+
+
+
+<div class="mx-auto  container">
+<div class="grid-cols-2 sm:grid md:grid-cols-4 gap-5  mq765:grid-cols-1 mq925:grid-cols-2  lg:grid-cols-2 ">
+ 
+
+
+  {% include 'booking/bookitemforuser.html' with products=products %}
+  
+</div>
+</div>
+
+<div class='mt-12 p-12'></div>
+{% include "howitwork.html" %}
+<div class='mt-12 p-12'></div>
+
+         
+
+{% include "testimonial.html"  with review=reviews  %}
+<div class='mt-12 p-12'></div>
+
+
+
+{% include "foot.html" with about=about%}
+
+      {% endblock content %} {%block script%}
+ 
+     
+      <script src="{%static 'src/jquery.min.js' %}"></script>
+      <script src="{%static 'src/slick.min.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+          <script>
+  
+  
+  
+            function handleCheckboxChange(event) {
+              const selectedItemsContainer1 = document.getElementById(
+                "dropdownSearchButton"
+              );
+              const selectedItemsContainer = document.getElementById("selected");
+              const selectedItems = Array.from(
+                document.querySelectorAll('input[name="services"]:checked')
+              ).map((checkbox) => document.getElementsByClassName('id_services_'+checkbox.value)[0].textContent);
+          
+              // Clear previous content
+              selectedItemsContainer1.value = selectedItems.toString();
+          
+              // Display selected items
+            }
+            const checkboxes = document.querySelectorAll('input[name="services"]');
+            checkboxes.forEach((checkbox) =>
+              checkbox.addEventListener("change", handleCheckboxChange)
+            );
+    $(".carousel-container").slick({
+      autoplay: true,
+      slidesToShow: 3,
+      dots: true,
+  dotsClass: 'slick-dots mx-auto',centerPadding: '50px',slidesToScroll: 1, speed: 350,
+      responsive: [
+      {
+      breakpoint: 1340,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+    });
+
+    flatpickr("#datePicker", {
+      dateFormat: "d M Y", 
+    disableMobile:true,
+      
+      // Format for displaying day name (short), month (short), and day of the month
+      minDate: "today", // Start from today's date
+      maxDate: new Date().fp_incr(7), // Allow selection within the next 7 days
+      static: true, // Prevent the calendar from closing on date selection
+    });
+  </script>
+  {%endblock script%}
