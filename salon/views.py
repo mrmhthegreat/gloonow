@@ -37,7 +37,7 @@ def index(request):
 def terms(request):
     ab=AboutusUs.objects.first()
 
-    return render(request, 'terms.html',{'about':abs})
+    return render(request, 'terms.html',{'about':ab})
 
 def contactus(request):
     abs=AboutusUs.objects.first()
