@@ -11,6 +11,7 @@
     <title>{% block title %} {% endblock %}</title>
     <meta name="description" content="My description" />
     <meta name="keywords" content="My, list, of, keywords" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %}
