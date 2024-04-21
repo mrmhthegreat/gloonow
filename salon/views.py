@@ -221,10 +221,13 @@ class PostListView( FormMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
         form=self.get_form()
+        ab=AboutusUs.objects.first()
+
         if self.request.GET.get("services"):
 
             form = FilterBook(self.request.GET)
         context['forms'] = form # use from mixin instead manual init
+        context['about'] = ab # use from mixin instead manual init
         return context
 
 @login_required
@@ -340,3 +343,6 @@ def addreviesw(request):
             return redirect('index')
     else:
         return render("404.html")
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)

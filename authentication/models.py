@@ -17,7 +17,7 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     username = None
     email = models.EmailField(max_length=255, unique=True, db_index=True)
     email_is_verified = models.BooleanField(default=False)
-    profile_image = models.ImageField(blank=True,upload_to='profile',null=True,default='Capture.PNG')
+    profile_image = models.ImageField(blank=True,upload_to='profile',null=True,default='profile/capture.png')
     address = models.CharField(max_length=120,null=True,blank=True, default='')
     company = models.CharField(max_length=120, null=True,blank=True,default='')
     rating = models.DecimalField(max_digits=2,default=0, null=True,blank=True,decimal_places=1)

@@ -14,3 +14,4 @@ urlpatterns = [
     path("payment/cancel/", CancelView.as_view(), name="cancel"),
       path("payment/webhooks/stripe/", StripeWebhookView.as_view(), name="stripe-webhook"),
 ]
+# 'bookings/payment/cancel/';

@@ -8,6 +8,7 @@ sitemaps = {
     'static': StaticViewSitemap,
     'bookings': BookingsSitemap
 }
+handler404 = 'salon.views.custom_404'
 urlpatterns = [
      path("", include("salon.urls")),
      path("user/", include("authentication.urls"),name='user'),

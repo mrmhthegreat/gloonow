@@ -296,7 +296,6 @@ class bookings(View,):
 
     def get(self, request,slug):
         # handle the get request
-        wallet=Wallet.objects.get_or_create(user=request.user)
         mo=BookingPost.objects.get(slug=slug)
         v=timess(mo.extra)
         context={'post':mo,'times':v}
@@ -405,7 +404,17 @@ def approveOrreject(request):
         return HttpResponseBadRequest('Invalid request')
     
 class SuccessView(TemplateView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)   
+        abs=AboutusUs.objects.first()                  
+        context["about"] = abs
+        return context
     template_name = "payment/success.html"
 
 class CancelView(TemplateView):
+    def get_context_data(self, **kwargs):          
+        context = super().get_context_data(**kwargs)   
+        abs=AboutusUs.objects.first()                  
+        context["about"] = abs
+        return context
     template_name = "payment/cancel.html"
