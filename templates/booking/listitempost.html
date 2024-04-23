@@ -70,7 +70,7 @@
           {%endif%}
           
           
-          {%if not product.confirm and not product.cancle%}
+          {%if not product.confirm and not product.reject and not  product.cancle%}
           <button type="button" onclick="approvereject('{{product.id}}','0');" class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:bg-red hover:scale-100  mt-5 text-white border border-red-100 hover:drop-shadow-[0_5px_5px_#CCA87662]  font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
       
             
@@ -82,6 +82,23 @@
             
             Approve
        </button>
+
+       {%elif product.cancle %}
+
+          <button  class="w-full mb-5  mt-5 block transition duration-150   mt-5 text-red-500 border border-red-500   text-sm px-5 py-2.5 text-center ">
+      
+            
+            Cancled By User
+       </button> 
+      
+       {%elif  product.reject%}
+       <button type="button"  class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:bg-red hover:scale-100  mt-5 text-white border border-red-100 hover:drop-shadow-[0_5px_5px_#CCA87662]  font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
+   
+         
+            Rejected
+       </button>
+       
+       
           {%endif%}
           
           

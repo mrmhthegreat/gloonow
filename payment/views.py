@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.utils.text import slugify
 from payment.models import Wallet
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 
 from django.utils.decorators import method_decorator
 from glow.models import AboutusUs
@@ -79,15 +80,17 @@ class StripeWebhookView(View):
          
             current_site = get_current_site(request)
             
-            subject = "Booking Receipt"
-            subject2 = "Booking Confirmation"
+            subject = "Appointment Booking Receipt"
+            subject2 = "Appointment Request"
             abs=AboutusUs.objects.first()
-            
+            current_site = get_current_site(request)
+
             messages.success(request,"Booked")
             message = render_to_string('booking/bookinforuseremail.html', {
                 'request': request,
                 'user': bb.user,
                 'user2': bb.saloon,
+                'domain': current_site.domain,
                 'date':bb.date,
                 'time':bb.time,'about':abs,
                 'address':bb.address,
@@ -102,6 +105,7 @@ class StripeWebhookView(View):
                 'request': request,
                 'user': bb.user,
                 'user2': bb.saloon,
+                'domain': current_site.domain,
                 'date':bb.date,
                 'time':bb.time,'about':abs,
                 'address':bb.address,
@@ -134,7 +138,7 @@ class StripeWebhookView(View):
             print(event["data"])
 
         return HttpResponse(status=200)
-class bookings(View,):
+class bookings(View,LoginRequiredMixin):
     def post(self, request,slug):
         # handle the post request
         times=request.POST.get('times')
@@ -217,18 +221,20 @@ class bookings(View,):
          
                 current_site = get_current_site(request)
                 
-                subject = "Booking Receipt"
-                subject2 = "Booking Confirmation"
+                subject = "Appointment Booking Receipt"
+                subject2 = "Appointment Request"
                 wallet[0].amount=wallet[0].amount-price.price
                 wallet[0].save()
                 messages.success(request,"Booked")
                 abs=AboutusUs.objects.first()
+                current_site = get_current_site(request)
 
                 message = render_to_string('booking/bookinforuseremail.html', {
                     'request': request,
                     'user': bookby.user,
                     'user2': bookby.saloon,
                     'date':bookby.date,'about':abs,
+                    'domain': current_site.domain,
                     'time':bookby.time,
                     'address':bookby.address,
                     'services':[x.name for x in bookby.services.all()],
@@ -243,6 +249,7 @@ class bookings(View,):
                     'user': bookby.user,
                     'user2': bookby.saloon,'about':abs,
                     'date':bookby.date,
+                    'domain': current_site.domain,
                     'time':bookby.time,
                     'address':bookby.address,
                     'services':[x.name for x in bookby.services.all()],
@@ -341,17 +348,29 @@ def approveOrreject(request):
 
             if tr=='0':
                 bk.confirm=False
-                bk.cancle=True
+                bk.reject=True
                 w=Wallet.objects.get_or_create(user=bk.user,)
                 w[0].amount= w[0].amount+bk.price
                 w[0].save()
-                subject = "Booking Reject"
-                bk.confirm=True
+                subject = ">Appointment Rejected"
+                bookin=bk.booking
+                choice_time = datetime.strptime(bk.date.strip(), '%Y-%m-%d').replace(second=0, microsecond=0,minute=0,hour=0)
+                ct=choice_time.strftime('%d %b %Y')
+                if bookin.extra.get(ct.strip()) is not None:
+                    if bookin.extra[ct].get(bk.time.strip()) is not None:
+                        bookin.extra[ct][bk.time.strip()]=False
+                    
+                else:
+                    bookin.extra['dates'].append(ct)
+                    bookin.extra[ct][bk.time.strip()]=False
+                current_site = get_current_site(request)
 
+                bookin.save()
                 message = render_to_string('booking/bookingreject.html', {
                     'request': request,
                     'user': bk.user,
                     'user2': bk.saloon,'about':abs,
+                    'domain': current_site.domain,
                     'date':bk.date,
                     'time':bk.time,
                     'address':bk.address,
@@ -369,11 +388,15 @@ def approveOrreject(request):
                
                 email.content_subtype = 'html'
                 Util.send_email(email)
+                messages.success(request, 'Appointment Confirmed.')
+
             if tr=='1':
+                current_site = get_current_site(request)
                 
-                subject = "Booking Confirmation"
+                subject = "Appointment Confirmed"
                 bk.confirm=True
                 message = render_to_string('booking/bookingconfirm.html', {
+                    'domain': current_site.domain,
                     'request': request,
                     'user': bk.user,
                     'user2': bk.saloon,
@@ -394,8 +417,9 @@ def approveOrreject(request):
                
                 email.content_subtype = 'html'
                 Util.send_email(email)
+                messages.warning(request, 'Appointment Cancel.')
+
             bk.save()
-            messages.success(request, f'update.')
 
             return HttpResponse('li')
         else:

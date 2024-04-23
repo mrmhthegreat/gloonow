@@ -38,7 +38,10 @@ def terms(request):
     ab=AboutusUs.objects.first()
 
     return render(request, 'terms.html',{'about':ab})
+def Privacy(request):
+    ab=AboutusUs.objects.first()
 
+    return render(request, 'privacy.html',{'about':ab})
 def contactus(request):
     abs=AboutusUs.objects.first()
     if request.method=="POST":

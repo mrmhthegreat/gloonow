@@ -55,8 +55,8 @@ class ser_admin(admin.ModelAdmin):
 
 @admin.register(BookBy)
 class bookby_admin(admin.ModelAdmin):
-    list_display=['name','email','salonname','salonemail','time','confirm','payment']
-    list_filter = ['confirm','payment','cancle','is_active','saloon__company']
+    list_display=['name','email','salonname','salonemail','time','payment','confirm','reject','cancle']
+    list_filter = ['confirm','payment','cancle','is_active','saloon__company','reject']
     search_fields = ['slug']
     def name(self, obj):
         if(obj.user):

@@ -71,7 +71,7 @@
           
           
           
-          {%if product.time|isafter:product.date and not  product.cancle %}
+          {%if product.time|isafter:product.date and not  product.cancle and not  product.confirm %}
           <button onclick="cancle('{{product.id}}');" class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:bg-burlywood-100 hover:scale-100  mt-5 text-white border border-burlywood-100 hover:drop-shadow-[0_5px_5px_#CCA87662]  text-sm px-5 py-2.5 text-center ">
       
             
@@ -82,10 +82,15 @@
           <button  class="w-full mb-5  mt-5 block transition duration-150   mt-5 text-red-500 border border-red-500   text-sm px-5 py-2.5 text-center ">
       
             
-            Cancled
+            Cancled By You
        </button> 
-       
-       {%elif not product.time|isafter:product.date and not  product.cancle and not product.is_active %}
+       {%elif  product.reject%}
+       <button type="button"  class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:bg-red hover:scale-100  mt-5 text-white border border-red-100 hover:drop-shadow-[0_5px_5px_#CCA87662]  font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
+   
+         
+            Rejected
+       </button>
+       {%elif not product.time|isafter:product.date and not  product.cancle %}
 
        <button   type="button" onclick="review('{{product.id}}')" class="w-full mb-5  mt-5 block transition duration-150   mt-5 text-burlywood-100 border border-primary  hover:drop-shadow-[0_5px_5px_#CCA87662]  text-sm px-5 py-2.5 text-center ">
    

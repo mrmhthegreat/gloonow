@@ -80,13 +80,13 @@ class owner(FormView):
 def verify_email(request):
     if request.method == "POST":
         if request.user.email_is_verified != True:
+            abs=AboutusUs.objects.first()
             current_site = get_current_site(request)
             user = request.user
             email = request.user.email
             subject = "Verify Email"
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = account_activation_token.make_token(user)
-            abs=AboutusUs.objects.first()
             
             message = render_to_string('authentication/verify_email_message.html', {
                 'request': request,
@@ -103,12 +103,17 @@ def verify_email(request):
             return redirect('verify-email-done',)
         else:
             return redirect('index')
+    if request.user.email_is_verified:
+        return redirect('index')
+
     abs=AboutusUs.objects.first()
     
     return render(request, 'authentication/verify_email.html',{'about':abs})
 @login_required
 def verify_email_done(request):
     abs=AboutusUs.objects.first()
+    if request.user.email_is_verified:
+        return redirect('index')
     return render(request, 'authentication/verfiy_done.html',{'about':abs})
 @login_required
 def verify_email_confirm(request, uidb64, token):
@@ -146,6 +151,19 @@ class forgortpassword(PasswordResetView):
     template_name='authentication/forgotpassword.html'
     html_email_template_name='authentication/reset_pass_mail.html'
     email_template_name='authentication/reset_pass_mail.html'
+    def form_valid(self, form):
+      opts = {
+          'use_https': self.request.is_secure(),
+          'token_generator': self.token_generator,
+          'from_email': self.from_email,
+          'email_template_name': self.email_template_name,
+          'subject_template_name': self.subject_template_name,
+          'request': self.request,
+          'html_email_template_name': 'authentication/reset_pass_mail.html',
+          'extra_email_context': {'about': AboutusUs.objects.first()},
+      }
+      form.save(**opts)
+      return HttpResponseRedirect(self.get_success_url())
     def get_context_data(self, **kwargs):          
         context = super().get_context_data(**kwargs)   
         abs=AboutusUs.objects.first()                  

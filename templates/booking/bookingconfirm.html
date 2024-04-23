@@ -1,47 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Receipt</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appointment Confirmed</title>
+<style>
+    /* Basic styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+    }
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    h1, p {
+        text-align: center;
+        color: #333;
+    }
+    .logo {
+        display: block;
+        margin: 0 auto;
+        width: 150px;
+    }
+    .appointment-info {
+        background-color: #f1f1f1;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .appointment-info h2 {
+        margin-top: 0;
+    }
+    .appointment-info p {
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+    .btn {
+        display: block;
+        width: 50%;
+        margin: 0 auto;
+        padding: 12px 24px;
+        background-color: #cca876;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+        background-color: #cca876;
+    }
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #888;
+    }
+    .footer a {
+        color: #cca876;
+        text-decoration: none;
+    }
+    .footer a:hover {
+        text-decoration: underline;
+    }
+</style>
 </head>
 <body>
-    <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#f3f3f3">
-        <tr>
-            <td align="center">
-                <table cellpadding="0" cellspacing="0" border="0" width="600" style="border-collapse: collapse;">
-                    <tr>
-                        <td align="center" bgcolor="#ffffff" style="padding: 40px 0;">
-                            <h1>Booking Confirm</h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#ffffff" style="padding: 20px;">
-                            <p>Dear {{user.first_name}} {{user.last_name}},</p>
-                            <p>Thank you for your booking. Below is your receipt:</p>
-                            <ul>
-                                <li><strong>Booking At:</strong> {{salon}}</li>
-                                <li><strong>Check-in Date:</strong> {{date}}</li>
-                                <li><strong>Check-in Time:</strong>{{time}}</li>
-                                <li><strong>Services :</strong>{{services}}</li>
+<div class="container">
+    <img src="{{about.logoimage.url}}" alt="{{about.company}}" class="logo">
+    <h1>Appointment Confirmed</h1>
+    <div class="appointment-info">
+        <h2>Appointment Details</h2>
+        <p><strong>Booking At:</strong> {{salon}}</p>
+        <p><strong>Date:</strong>  {{date}} </p>
+        <p><strong>Time:</strong>{{time}}</p>
+        <p><strong>Services :</strong>{{services}}</p>
 
-                                <li><strong>Salon Address:</strong> {{address}}</li>
-                                <li><strong>Salon Phone:</strong> {{number}}</li>
-                                <li><strong>Salon EMail:</strong> {{mail}}</li>
-                            </ul>
-                            <p>Your Booking  has been Approved By Salon.</p>
-                            <p>If you have any questions or concerns about your booking, please don't hesitate to <a href="{%url 'contactus' %}">contact us</a>.</p>
-                            <p>Thank you for choosing us. We hope you have a pleasant stay!</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#ffffff" align="center" style="padding: 20px;">
-                            <p><em>This is an automated message. Please do not reply.</em></p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+
+        <p><strong>Salon Location:</strong> {{address}}</p>
+        <p><strong>Salon Phone:</strong>{{number}}</p>
+        <p><strong>Salon Mail::</strong> {{mail}}</p>
+    </div>
+    <p>Dear {{user.first_name}} {{user.last_name}},</p> <p>We are pleased to confirm your appointment. Get ready to {{about.company}}.</p>
+    <p>After your appointment, don't forget to share your experience with us by leaving a <a href="{{ request.scheme }}://{{ domain }}{% url 'mybooking' %}">review</a>. Your feedback helps us improve our services.</p>
+    <p>If you have any questions, please do not hesitate to <a href="{{ request.scheme }}://{{ domain }}{% url 'contactus' %}">contact us</a>.</p>
+    <p class="footer">Best regards,<br>{{about.company}}</p>
+
+
+
+    <p><em>This is an automated message. Please do not reply.</em></p>
+                        
+</div>
 </body>
 </html>
