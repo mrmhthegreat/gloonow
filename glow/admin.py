@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from glow.models import AppReview,ContactUs,AboutusUs
-admin.site.site_header = 'Glonow'
+admin.site.site_header = 'Glo-Now'
 
 @admin.register(AppReview)
 class appReview_admin(admin.ModelAdmin):
