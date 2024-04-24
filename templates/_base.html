@@ -180,14 +180,14 @@
               </a>
             </li>
             {% if user.is_authenticated %}  <li>
-              <a
-                href="#"
+              <button
+             
                 data-modal-target="authentication-modal2" data-modal-toggle="authentication-modal2"
                 class="block py-2 px-3 text-gray-900 text-white hover:text-burlywood-100 duration-300 md:hover:text-burlywood-100 bg-transparent m rounded md:bg-transparent md:p-0 md:dark:text-blue-500 relative text-md w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-burlywood-100 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left"
                 aria-current="page"
                 >Rate Us <img class="w-1.5 h-4 relative mix-blend-normal inline
                 text-white" alt="" src="{% static "svg/svg.svg" %}" />
-              </a>
+              </button>
             </li>
             {%endif%}
           </ul>
