@@ -39,7 +39,7 @@
 
                         <div>
                             <label for="id_first_name" class="block mb-2 text-sm font-medium text-white dark:text-white">First name</label>
-                            <input name="first_name" type="text" id="id_first_name" class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" placeholder="John" required />
+                            {% render_field form.first_name  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
                         </div>
                         <div>
                             <label for="id_last_name" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.last_name.label}}</label>
@@ -57,10 +57,12 @@
                        
                         {% render_field form.phone_number  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
                    
+                         {% if form.phone_number.help_text %}
+                        <p  class="mt-2 text-sm text-gray-500">{{form.phone_number.help_text}}</p>
+                        {% endif %}
                         {% if form.phone_number.errors %}
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.phone_number.errors.as_text }}</p>
-                        {% endif %}
-                    
+                        {% endif %} 
                     </div>  
                     
                     

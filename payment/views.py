@@ -352,7 +352,7 @@ def approveOrreject(request):
                 w=Wallet.objects.get_or_create(user=bk.user,)
                 w[0].amount= w[0].amount+bk.price
                 w[0].save()
-                subject = ">Appointment Rejected"
+                subject = "Appointment Rejected"
                 bookin=bk.booking
                 choice_time = datetime.strptime(bk.date.strip(), '%Y-%m-%d').replace(second=0, microsecond=0,minute=0,hour=0)
                 ct=choice_time.strftime('%d %b %Y')
@@ -388,7 +388,7 @@ def approveOrreject(request):
                
                 email.content_subtype = 'html'
                 Util.send_email(email)
-                messages.success(request, 'Appointment Confirmed.')
+                messages.success(request, 'Appointment Rejected.')
 
             if tr=='1':
                 current_site = get_current_site(request)
@@ -417,7 +417,7 @@ def approveOrreject(request):
                
                 email.content_subtype = 'html'
                 Util.send_email(email)
-                messages.warning(request, 'Appointment Cancel.')
+                messages.warning(request, 'Appointment Confirmed.')
 
             bk.save()
 

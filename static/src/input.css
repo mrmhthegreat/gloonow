@@ -89,9 +89,11 @@ input:-webkit-autofill,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
+input:autofill,
 select:-webkit-autofill:focus {
   border: 1px solid #253341;
   -webkit-text-fill-color: white;
+  -webkit-text-fill: white;
   -webkit-box-shadow: 0 0 0px 1000px #253341 inset;
   box-shadow: 0 0 0px 1000px #253341 inset;
   transition: background-color 5000s ease-in-out 0s;

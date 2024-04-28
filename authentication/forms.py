@@ -9,8 +9,8 @@ class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
 
-    password = forms.CharField(label="Password", widget=forms.PasswordInput)
-    phone_number = PhoneNumberField(region="PK")
+    password = forms.CharField(label="Password", widget=forms.PasswordInput,)
+    phone_number = PhoneNumberField(region="NZ",help_text="0064xxxxxxx format",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     class Meta:
         model = UserProfile
         fields = ["email",'first_name','last_name','phone_number','profile_image','password']
@@ -44,7 +44,7 @@ class OwnerUserCreationForm(forms.ModelForm):
     fields, plus a repeated password."""
 
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
-    phone_number = PhoneNumberField(region="PK")
+    phone_number = PhoneNumberField(region="NZ",help_text="0064xxxxxxx format",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     
 
     class Meta:

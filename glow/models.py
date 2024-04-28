@@ -21,7 +21,7 @@ class ContactUs(models.Model):
     message=models.TextField(max_length=5000, null=True,blank=True,default='')
     email=models.EmailField(max_length=255, null=True,blank=True,default='')
     
-    phone_number = PhoneNumberField(blank=True, unique=True)
+    phone_number = PhoneNumberField(blank=True, unique=True,region="NZ",help_text="0064xxxxxxx format",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     first_name=models.CharField(max_length=120, null=True,blank=True,default='')
     last_name=models.CharField(max_length=120, null=True,blank=True,default='')
     date_create=models.DateField(auto_now_add=True)
@@ -35,7 +35,7 @@ class AboutusUs(models.Model):
 
     email=models.EmailField(max_length=255, null=True,blank=True,default='')
     
-    phone_number = PhoneNumberField(blank=True, unique=True)
+    phone_number = PhoneNumberField(blank=True, unique=True,region="NZ",help_text="0064xxxxxxx format",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     address=models.CharField(max_length=5000, null=True,blank=True,default='')
     text1_heading=models.TextField(max_length=5000, null=True,blank=True,default='')
     text1_description=models.TextField(max_length=5000, null=True,blank=True,default='')

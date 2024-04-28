@@ -73,7 +73,7 @@ class BookingPost(models.Model):
     image = models.ImageField(blank=True,upload_to='media/post/',null=True)
     address = models.CharField(max_length=120,null=True,blank=True, default='')
     extra = models.JSONField(null=True,)
-    phone_number = PhoneNumberField(blank=True,)
+    phone_number = PhoneNumberField(blank=True,help_text="0064xxxxxxx format",region="NZ",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     is_active=models.BooleanField(default=False)
 
     date_create=models.DateField(auto_now=True)
@@ -120,7 +120,7 @@ class BookBy(models.Model):
     time = models.CharField(max_length=120,null=True,blank=True, default='')
     date = models.CharField(max_length=120,null=True,blank=True, default='')
     extra = models.JSONField(null=True,)
-    phone_number = PhoneNumberField(blank=True,)
+    phone_number = PhoneNumberField(blank=True,help_text="0064xxxxxxx format",region="NZ",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     is_active=models.BooleanField(default=False)
     date_create=models.DateField(auto_now_add=True)
     price = models.DecimalField(decimal_places=2, max_digits=10,default=40)
