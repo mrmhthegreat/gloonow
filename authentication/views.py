@@ -88,7 +88,7 @@ def verify_email(request):
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = account_activation_token.make_token(user)
             
-            message = render_to_string('authentication/verify_email_message.html', {
+            message = render_to_string('authentication/emails/verify_email_message.html', {
                 'request': request,
                 'user': user,
                 'domain': current_site.domain,
@@ -149,8 +149,8 @@ class changepassword(SuccessMessageMixin,PasswordChangeView):
 
 class forgortpassword(PasswordResetView):
     template_name='authentication/forgotpassword.html'
-    html_email_template_name='authentication/reset_pass_mail.html'
-    email_template_name='authentication/reset_pass_mail.html'
+    html_email_template_name='authentication/emails/reset_pass_mail.html'
+    email_template_name='authentication/emails/reset_pass_mail.html'
     def form_valid(self, form):
       opts = {
           'use_https': self.request.is_secure(),
@@ -159,7 +159,7 @@ class forgortpassword(PasswordResetView):
           'email_template_name': self.email_template_name,
           'subject_template_name': self.subject_template_name,
           'request': self.request,
-          'html_email_template_name': 'authentication/reset_pass_mail.html',
+          'html_email_template_name': 'authentication/emails/reset_pass_mail.html',
           'extra_email_context': {'about': AboutusUs.objects.first()},
       }
       form.save(**opts)

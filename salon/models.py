@@ -22,9 +22,9 @@ class BookingPostQuerySet(models.QuerySet):
     def search(self,active=True):
         current_time = datetime.now().replace(second=0, microsecond=0)
         
-        v=[current_time.strftime('%d %b %Y'),(current_time+timedelta(days = 1)).strftime('%d %b %Y'),(current_time+timedelta(days = 2)).strftime('%d %b %Y'),(current_time+timedelta(days = 3)).strftime('%d %b %Y'),(current_time+timedelta(days = 4)).strftime('%d %b %Y') ,(current_time+timedelta(days = 5)).strftime('%d %b %Y'),(current_time+timedelta(days = 6)).strftime('%d %b %Y')]
+        v=current_time-timedelta(days = 1)
         
-        lookup=Q(extra__dates__icontains=v[0])|Q(extra__dates__icontains=v[1])|Q(extra__dates__icontains=v[2])|Q(extra__dates__icontains=v[3])|Q(extra__dates__icontains=v[4])|Q(extra__dates__icontains=v[5])|Q(extra__dates__icontains=v[6])&Q(is_active=True)
+        lookup=Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         
         qs=self.filter(lookup)
             
@@ -32,21 +32,24 @@ class BookingPostQuerySet(models.QuerySet):
           
             
     def filterspecfice(self,date,services,active=True):
-        lookup=Q(extra__dates__icontains=date)&Q(services__in=[x.id for x in services])&Q(is_active=True)
-        
+
+        lookup=Q(bookdate=date)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         qs=self.filter(lookup)
             
         return qs.distinct()
      
     def filterspecficesv(self,services,active=True):
-        lookup=Q(services__in=[x.id for x in services])&Q(is_active=True)
+        
+        lookup=Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         
         
         qs=self.filter(lookup)
             
         return qs.distinct()
     def filterdatespecficesv(self,services,active=True):
-        lookup=Q(extra__dates__icontains=services)&Q(is_active=True)
+        current_time = datetime.now().replace(second=0, microsecond=0,day=services.day,year=services.year,month=services.month)
+
+        lookup=Q(bookdate=services)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         qs=self.filter(lookup)
             
         return qs.distinct()
@@ -75,8 +78,13 @@ class BookingPost(models.Model):
     extra = models.JSONField(null=True,)
     phone_number = PhoneNumberField(blank=True,help_text="0064xxxxxxx format",region="NZ",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     is_active=models.BooleanField(default=False)
+    is_book=models.BooleanField(default=False)
+    is_hide=models.BooleanField(default=False)
 
     date_create=models.DateField(auto_now=True)
+    bookdatetime=models.DateTimeField(null=True)
+    bookdate=models.DateField(null=True)
+    booktime=models.TimeField(null=True)
     date_posted = models.DateTimeField(auto_now_add=True)
     objects=BookingPostManger()
 
@@ -113,6 +121,8 @@ class BookBy(models.Model):
     confirm=models.BooleanField(default=False)
     reject=models.BooleanField(default=False)
     done=models.BooleanField(default=False)
+    hideforowner=models.BooleanField(default=False)
+    hideforuser=models.BooleanField(default=False)
     cancle_reason=models.CharField(max_length=5000, null=True,blank=True,default='')
     payment_id=models.CharField(max_length=5000, null=True,blank=True,default='')
     message=models.TextField(max_length=5000, null=True,blank=True,default='')

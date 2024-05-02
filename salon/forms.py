@@ -2,6 +2,7 @@ from django import forms
 
 from salon.models import BookBy, BookingPost, Services
 from datetime import datetime
+from django.db.models import Q
 
 from salon.myfucn import slugify_instance
 class FilterBook(forms.Form):
@@ -22,14 +23,21 @@ class FilterBook(forms.Form):
         date =self.form.cleaned_data.get('dates')
         if(selection):
             if(date):
-                        
-                return queryset.filter(extra__dates__icontains=date,services__in=[x.id for x in selection]).exclude(is_active=False).order_by("user__rating")
+                choice_date = datetime.strptime(date.strip(), '%d %b %Y')
+
+                lookup=Q(bookdate=choice_date)&Q(services__in=[x.id for x in selection])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+                
+                return queryset.filter(lookup).order_by("user__rating")
             else:
-                return  queryset.filter(services__in=[x.id for x in selection])
+                lookup=Q(services__in=[x.id for x in selection])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+
+                return  queryset.filter(lookup).order_by("user__rating")
         if(date):
             
-                        
-            return queryset.filter(extra__dates__icontains=date,).exclude(is_active=False).order_by("user__rating")
+            choice_date = datetime.strptime(date.strip(), '%d %b %Y')
+            lookup=Q(bookdate=choice_date)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+            
+            return queryset.filter(lookup).order_by("user__rating")
             
         return queryset
 
@@ -87,7 +95,7 @@ class BookingPostForm(forms.ModelForm):
         ('11:30 PM', '11:30 PM')
     ]
     dates = forms.CharField(label="Dates", widget=forms.TextInput)
-    times = forms.MultipleChoiceField(choices=CHOICES,widget=forms.CheckboxSelectMultiple)
+    times = forms.TimeField(label="Times")
     services = forms.ModelMultipleChoiceField(
         queryset=Services.objects.all(),
         widget=forms.CheckboxSelectMultiple)
@@ -105,56 +113,63 @@ class BookingPostForm(forms.ModelForm):
         cleaned_data = super(BookingPostForm, self).clean(*args, **kwargs)
         services =cleaned_data.get('services')
         dates =cleaned_data.get('dates')
-        b=self.request.POST.getlist('times')
+        b=self.request.POST.get('times')
+        
         if dates==None:
             self.add_error('dates', "Error Dates")
-        elif len(dates.split(','))<1:
-            self.add_error('dates', "Select Dates")
-
-        if services ==None:
+       
+        if services==None:
             self.add_error('services', "Select Services")
 
         elif len(services)<1:
             self.add_error('services', "Select Service")
-        elif len(b)<1:
-            self.add_error('time', "Select Times")
 
-     
+        time_obj = datetime.strptime(b, '%H:%M')
+        current_time = datetime.now().replace(second=0, microsecond=0)
+
+        hour12=time_obj.strftime('%I:%M %p')
+
+        choice_time = datetime.strptime(dates.strip()+" "+hour12.strip(), '%d %b %Y %I:%M %p').replace(second=0, microsecond=0)
+        if choice_time < current_time:
+            self.add_error('times', "Error Times")
+
         return cleaned_data
     def save(self,request,commit=False):
         # Sets username to email before saving
         post = super().save(commit=False)
-        b=self.request.POST.getlist('times')
-        dates =self.cleaned_data.get('dates').split(',')
+        b=self.request.POST.get('times')
+        dates =self.cleaned_data.get('dates')
         services =self.cleaned_data.get('services')
         title =self.cleaned_data.get('title')
-        dates=[x.strip() for x in dates]
-        b=[x.strip() for x in b]
+        dates=dates.strip()
+
+
+        time_obj = datetime.strptime(b, '%H:%M')
+
+        hour12=time_obj.strftime('%I:%M %p')
+        time_obj2 = datetime.strptime(hour12, '%I:%M %p')
+
         data={
             "dates":dates,'times':b,
             
 
         }
-        b.sort()
-        dates.sort()
-        current_time = datetime.now().replace(second=0, microsecond=0)
+        datetimeobj = datetime.strptime(dates.strip()+" "+hour12.strip(), '%d %b %Y %I:%M %p').replace(second=0, microsecond=0)
 
+
+        choice_date = datetime.strptime(dates.strip(), '%d %b %Y')
         
-        for tim in dates:
-            data[tim.strip()]={}
-        for tim in dates:
-           
-            for time in b:
-                choice_time = datetime.strptime(tim.strip()+" "+time.strip(), '%d %b %Y %I:%M %p').replace(second=0, microsecond=0)
-                print(choice_time)
-                if choice_time > current_time:
-                    if data.get(tim) is not None:
-                        data[tim.strip()][time.strip()]=False
+        
+        
         post.extra=data
+        post.bookdate=choice_date
+        post.bookdatetime=datetimeobj
+        post.booktime=time_obj2
         post.user=request.user
+        post.t=request.user
         post.is_active=True
         post.title=title
-        post.slug=f"{request.user.company} From {dates[0]} To {dates[-1]}"
+        post.slug=f"{request.user.company} For {dates}-{hour12}"
         slugify_instance(post)
 
         post.save()

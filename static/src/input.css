@@ -87,10 +87,30 @@
 } /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill,
 textarea:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
 textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
-input:autofill,
-select:-webkit-autofill:focus {
+select:-webkit-autofill:hover,
+
+
+
+
+select:-webkit-autofill:focus,
+
+
+
+input:-ms-autofill,
+textarea:-ms-autofill,
+input:-ms-autofill:hover, 
+input:-ms-autofill:focus,textarea:-ms-autofill,
+textarea:-ms-autofill:hover,
+textarea:-ms-autofill:focus,
+select:-ms-autofill,
+select:-ms-autofill:hover
+
+{
   border: 1px solid #253341;
   -webkit-text-fill-color: white;
   -webkit-text-fill: white;
@@ -193,4 +213,16 @@ body::-webkit-scrollbar-button:vertical:start:increment,
 #preview::-webkit-scrollbar-button:horizontal:start:increment,
 #preview::-webkit-scrollbar-button:horizontal:end:decrement {
   display: var(--show-double-buttons, none);
+}
+
+
+input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  /* Change the background color of the time picker */
+  background-color: #f2f2f2;
+}
+
+/* Style for the arrow buttons in the time picker */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  /* Change the color of the arrow buttons */
+  color: #ffffff;
 }

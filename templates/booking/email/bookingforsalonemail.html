@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Appointment Rejected</title>
+<title>Appointment Request Received</title>
 <style>
     /* Basic styles */
     body {
@@ -42,6 +42,21 @@
         margin-bottom: 10px;
         line-height: 1.5;
     }
+    .btn {
+        display: block;
+        width: 50%;
+        margin: 0 auto;
+        padding: 12px 24px;
+        background-color: #cca876;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+        background-color: #cca876;
+    }
     .footer {
         text-align: center;
         margin-top: 20px;
@@ -59,26 +74,26 @@
 <body>
 <div class="container">
     <img src="{{about.logoimage.url}}" alt="{{about.company}}" class="logo">
-    <h1>Appointment Rejected</h1>
+    <h1>Appointment Request Received</h1>
     <div class="appointment-info">
         <h2>Appointment Details</h2>
-        <p><strong>Booking At:</strong> {{salon}}</p>
-        <p><strong>Date:</strong>  {{date}} </p>
-        <p><strong>Time:</strong>{{time}}</p>
-        <p><strong>Services :</strong>{{services}}</p>
-
-
-        <p><strong>Salon Location:</strong> {{address}}</p>
-        <p><strong>Salon Phone:</strong>{{number}}</p>
-        <p><strong>Salon Mail::</strong> {{mail}}</p>
+        <p><strong>Booking Reference:</strong>{{salon}}</p>
+        <p><strong>Date:</strong>  {{date}}</p>
+        <p><strong>Time:</strong> {{time}}</p>
+        <p><strong>Customer Name:</strong> {{user.first_name}} {{user.last_name}}</p>
+        <p><strong>Contact:</strong>{{user.phone_number}}</p>
+        <p><strong>Mail:</strong>{{user.email}}</p>
+        <p><strong>Notes:</strong>{{user.first_name}} {{user.last_name}}  has requested an appointment for a follow-up services.{{services}} </p>
+   
+   
     </div>
-    <p>Dear {{user.first_name}} {{user.last_name}},</p><p>We regret to inform you that your appointment request has been rejected.</p>
-    <p>Your payment has been added to your wallet, which you can use for future bookings.</p>
-    <p>If you have any questions , please feel free to <a href="{{ request.scheme }}://{{ domain }}{% url 'contactus' %}">contact us</a>.</p>
+    <p>Please review the appointment request and confirm with the patient as soon as possible.</p>
+    <a href="{{ request.scheme }}://{{ domain }}{% url 'mybooking' %}" class="btn">Confirm (or Reject) Appointment</a>
+    <p>If you have any questions or need further assistance, please feel free to <a href="{{ request.scheme }}://{{ domain }}{% url 'contactus' %}">contact us</a>.</p>
     <p class="footer">Best regards,<br>{{about.company}}</p>
-
     <p><em>This is an automated message. Please do not reply.</em></p>
-         
+
+
 </div>
 </body>
 </html>

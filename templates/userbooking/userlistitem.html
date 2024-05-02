@@ -30,7 +30,7 @@
         <div
         class="text-burlywood-100 font-semibold mq450:text-burlywood-100 text-xl mq450:leading-[21px]"
       >
-       {{product.date|dictlist}}
+       {{product.date}}
       </div> 
       <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white">
         {{product.time}}
@@ -70,9 +70,8 @@
           {%endif%}
           
           
-          
-          {%if product.time|isafter:product.date and not  product.cancle and not  product.confirm %}
-          <button onclick="cancle('{{product.id}}');" class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:bg-burlywood-100 hover:scale-100  mt-5 text-white border border-burlywood-100 hover:drop-shadow-[0_5px_5px_#CCA87662]  text-sm px-5 py-2.5 text-center ">
+          {%if  not  product.cancle and not  product.confirm  and not  product.reject %}
+          <button onclick="cancle('{{product.id}}','0');" class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:bg-red-500 hover:scale-100  mt-5 text-white border hover:text-white border-red-500 hover:drop-shadow-[0_5px_5px_red-500]  text-sm px-5 py-2.5 text-center ">
       
             
                Cancel
@@ -84,20 +83,51 @@
             
             Cancel By You
        </button> 
+       <button onclick="cancle('{{product.id}}','1');" class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:text-red-500 hover:scale-100  mt-5 text-white border border-burlywood-100  hover:border-red-500  hover:drop-shadow-[0_5px_5px_red-100]  text-sm px-5 py-2.5 text-center ">
+      
+            
+        Delete
+   </button>
+
+
+
        {%elif  product.reject%}
-       <button type="button"  class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:bg-red hover:scale-100  mt-5 text-white border border-red-100 hover:drop-shadow-[0_5px_5px_#CCA87662]  font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
+       <button type="button"  class="w-full mb-5  mt-5 block transition duration-150   mt-5 text-red-500 border border-red-500   text-sm px-5 py-2.5 text-center ">
    
          
             Rejected
        </button>
-       {%elif not product.time|isafter:product.date and not  product.cancle %}
-
-       <button   type="button" onclick="review('{{product.id}}')" class="w-full mb-5  mt-5 block transition duration-150   mt-5 text-burlywood-100 border border-primary  hover:drop-shadow-[0_5px_5px_#CCA87662]  text-sm px-5 py-2.5 text-center ">
+       <button onclick="cancle('{{product.id}}','1');" class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:text-red-500 hover:scale-100  mt-5 text-white border border-burlywood-100  hover:border-red-500  hover:drop-shadow-[0_5px_5px_red-100]  text-sm px-5 py-2.5 text-center ">
+      
+            
+        Delete
+   </button>
+       {%elif not product.time|isafter:product.date and product.confirm %}
+       <button type="button"  class="w-full mb-5  mt-5 block transition duration-150   mt-5 text-green-500 border border-green-500   text-sm px-5 py-2.5 text-center ">
    
          
+        Approved
+       </button>
+
+       
+ 
+ {%elif product.time|isafter:product.date and product.confirm and not product.is_active %}
+
+       <button   type="button" onclick="review('{{product.id}}');" class="w-full mb-5  mt-5 block transition duration-150   mt-5 text-burlywood-100 border border-primary  hover:drop-shadow-[0_5px_5px_#CCA87662]  text-sm px-5 py-2.5 text-center ">
+   
          Give Review
     </button>
+    {%elif  product.confirm and  product.is_active%}
+
+       
+    <button onclick="cancle('{{product.id}}','1');" class="w-full mb-5  mt-5 block transition duration-150 ease-in-out hover:-translate-y-1 hover:text-red-500 hover:scale-100  mt-5 text-white border border-burlywood-100  hover:border-red-500  hover:drop-shadow-[0_5px_5px_red-100]  text-sm px-5 py-2.5 text-center ">
+      
+            
+      Delete
+ </button>
           {%endif%}
+
+
         </div>
       </div>
     {% comment %} </div> {% endcomment %}

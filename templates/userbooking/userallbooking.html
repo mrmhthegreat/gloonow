@@ -43,7 +43,7 @@
 
 
 
-{%include 'booking/userlistitem.html' with products=bookings %}
+{%include 'userbooking/userlistitem.html' with products=bookings %}
 
 </div>
 </div>
@@ -195,14 +195,14 @@
 
   }
 
-  function cancle(event) {
+  function cancle(event,b) {
     $.ajax(
       {
           type:"POST",
           url: "{%url 'canclebook' %}",
           data:{
                    slug: event,
-                  
+                   type:b,
                    csrfmiddlewaretoken: '{{ csrf_token }}'
           },
           headers: {

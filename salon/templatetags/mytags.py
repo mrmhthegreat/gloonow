@@ -1,7 +1,7 @@
 from django import template
 from datetime import datetime
 from django.utils.safestring import mark_safe
-
+from django.contrib.humanize.templatetags.humanize import ordinal
 import json
 
 
@@ -23,6 +23,25 @@ def bold_time(dates):
     # choice_time = datetime.strptime(time.strip()+" "+time.strip(), '%d %b %Y %I:%M %p').replace(second=0, microsecond=0,minute=0,hour=0)
     # if(current_time.day>choice_time_time)
     return date
+@register.filter()
+def hourampm(times):
+    return times.strftime('%I:%M %p')
+@register.filter(s_safe=True)
+def dayyear(dates):
+        # text += ('<p class="site-description">' + i + '</p>')
+    # return mark_safe(text)
+    # Get the day name, month name, and month day
+    day_name = dates.strftime('%a %b')  # Full weekday name
+    month_day = dates.strftime('%d')  # Day of the month
+    
+
+    suffix = 'th' if 11 <= int(month_day) <= 13 else {1: 'st', 2: 'nd', 3: 'rd'}.get(int(month_day) % 10, 'th')
+
+
+    formatted_date = f"{day_name} {int(month_day)}<sup>{suffix}</sup>  "
+    
+    return mark_safe(formatted_date)
+
 @register.filter()
 def times(extra):
     dates=extra['dates']
@@ -130,7 +149,7 @@ def isafter(time,date):
     current_time = datetime.now().replace(second=0, microsecond=0)
    
     
-    if datetime.strptime(date.strip()+" "+time.strip(), '%Y-%m-%d %I:%M %p').replace(second=0, microsecond=0) > current_time:
+    if datetime.strptime(date.strip()+" "+time.strip(), '%d %b %Y %I:%M %p').replace(second=0, microsecond=0) < current_time:
         return True
     else: 
         False

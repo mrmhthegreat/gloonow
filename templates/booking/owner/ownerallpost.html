@@ -23,7 +23,7 @@
         <svg class="rtl:rotate-180 w-3 h-3 text-white mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
         </svg>
-        <a href="{%url 'mybookings'%}" class="ms-1 text-sm font-medium text-white hover:text-primary md:ms-2 dark:text-gray-400 dark:hover:text-white">Dashboard</a>
+        <a href="{%url 'ownerallpost' %}" class="ms-1 text-sm font-medium text-white hover:text-primary md:ms-2 dark:text-gray-400 dark:hover:text-white">Dashboard</a>
       </div>
     </li>
     <li aria-current="page">
@@ -46,7 +46,7 @@
 
 
 
-{%include 'booking/myposts.html' with products=bookings %}
+{%include 'booking/owner/myposts.html' with products=bookings %}
 
 </div>
 
@@ -89,7 +89,7 @@
   <ul class="flex items-center  -space-x-px h-8 text-sm">
     <li>
       {% if page_obj.has_previous %}
-      <form class=""  method='GET' action="{% url 'mybookings' %}">
+      <form class=""  method='GET' action="{% url 'ownerallpost' %}">
         <input type='hidden' name="page"  value="{{ page_obj.previous_page_number }}">
         
         <button
@@ -114,7 +114,7 @@
       
       
       
-      <form class=""  method='GET' action="{% url 'mybookings' %}">
+      <form class=""  method='GET' action="{% url 'ownerallpost' %}">
     
         <input type='hidden' name="page"  value="{{  page_number  }}">
       
@@ -136,7 +136,7 @@
       
   
   {% if page_obj.has_next %}
-  <form class=""  method='GET' action="{% url 'mybookings' %}">
+  <form class=""  method='GET' action="{% url 'ownerallpost' %}">
     <input type='hidden' name="page"  value="{{ page_obj.next_page_number }}">
   
 

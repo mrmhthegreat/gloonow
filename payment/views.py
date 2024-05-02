@@ -59,18 +59,9 @@ class StripeWebhookView(View):
             up=UserProfile.objects.get(id=id )
             bb.payment=True
             bb.payment_id=data['id']
-            choice_time = datetime.strptime(bb.date.strip(), '%Y-%m-%d').replace(second=0, microsecond=0,minute=0,hour=0)
-            ct=choice_time.strftime('%d %b %Y')
-            if bbk.extra.get(ct.strip()) is not None:
-                if bbk.extra[ct].get(bb.time.strip()) is not None:
-                    bbk.extra[ct][bb.time.strip()]=True
-                has=False
-                for key in bbk.extra[ct].keys():
-                    if bbk.extra[ct][key]==False:
-                        has=True
-                if not has:
-                    bbk.extra['dates'].remove(ct)
-
+            
+            bbk.is_book=True
+            bbk.is_active=False
 
             bbk.save()
             bb.save()
@@ -86,7 +77,7 @@ class StripeWebhookView(View):
             current_site = get_current_site(request)
 
             messages.success(request,"Booked")
-            message = render_to_string('booking/bookinforuseremail.html', {
+            message = render_to_string('booking/email/bookinforuseremail.html', {
                 'request': request,
                 'user': bb.user,
                 'user2': bb.saloon,
@@ -101,7 +92,7 @@ class StripeWebhookView(View):
                 'mail':bb.saloon.email
              
             }) 
-            message2 = render_to_string('booking/bookingforsalonemail.html', {
+            message2 = render_to_string('booking/email/bookingforsalonemail.html', {
                 'request': request,
                 'user': bb.user,
                 'user2': bb.saloon,
@@ -141,8 +132,6 @@ class StripeWebhookView(View):
 class bookings(View,LoginRequiredMixin):
     def post(self, request,slug):
         # handle the post request
-        times=request.POST.get('times')
-        dates=request.POST.get('dates')
         mo=BookingPost.objects.get(slug=slug)
         service=request.POST.getlist('services')
         
@@ -150,22 +139,21 @@ class bookings(View,LoginRequiredMixin):
             messages.warning(request,'You Can not Book Register As Normal User')
             v=timess(mo.extra)
             context={'post':mo,'times':v}
-            return render(request, 'bookapp.html',context)
-        choice_time = datetime.strptime(dates.strip(), '%Y-%m-%d').replace(second=0, microsecond=0,minute=0,hour=0)
-        ct=choice_time.strftime('%d %b %Y')
-        has=True
-        if mo.extra.get(ct.strip()) is not None:
-            if mo.extra[ct.strip()].get(times.strip()) is not None:
-                if mo.extra[ct.strip()][times.strip()]==True:
-                    has=False
-        else:
-            has=False
+            return render(request, 'payment/booknow.html',context)
+
+
+        times=mo.booktime.strftime('%I:%M %p')
+        dates=mo.bookdate.strftime('%d %b %Y')
+
       
-        if(not times or not dates or len(service)<1 or not has):
+        has=mo.is_book
+        
+      
+        if( len(service)<1 or  has):
             messages.warning(request,'Pick Date, Time and Serivecs')
             v=timess(mo.extra)
             context={'post':mo,'times':v}
-            return render(request, 'bookapp.html',context)
+            return render(request, 'payment/booknow.html',context)
        
         else:
             
@@ -200,17 +188,9 @@ class bookings(View,LoginRequiredMixin):
                 up=UserProfile.objects.get(id=request.user.id )
                 bookby.payment=True
                 bookby.payment_id="Walelt"
-                choice_time = datetime.strptime(bookby.date.strip(), '%Y-%m-%d').replace(second=0, microsecond=0,minute=0,hour=0)
-                ct=choice_time.strftime('%d %b %Y')
-                if bbk.extra.get(ct.strip()) is not None:
-                    if bbk.extra[ct].get(bookby.time.strip()) is not None:
-                        bbk.extra[ct][bookby.time.strip()]=True
-                    has=False
-                    for key in bbk.extra[ct].keys():
-                        if bbk.extra[ct][key]==False:
-                            has=True
-                    if not has:
-                        bbk.extra['dates'].remove(ct)
+                
+                bbk.is_book=True
+                bbk.is_active=False
 
 
                 bbk.save()
@@ -229,7 +209,7 @@ class bookings(View,LoginRequiredMixin):
                 abs=AboutusUs.objects.first()
                 current_site = get_current_site(request)
 
-                message = render_to_string('booking/bookinforuseremail.html', {
+                message = render_to_string('booking/email/bookinforuseremail.html', {
                     'request': request,
                     'user': bookby.user,
                     'user2': bookby.saloon,
@@ -244,7 +224,7 @@ class bookings(View,LoginRequiredMixin):
                     'mail':bookby.saloon.email
                 
                 }) 
-                message2 = render_to_string('booking/bookingforsalonemail.html', {
+                message2 = render_to_string('booking/email/bookingforsalonemail.html', {
                     'request': request,
                     'user': bookby.user,
                     'user2': bookby.saloon,'about':abs,
@@ -304,9 +284,12 @@ class bookings(View,LoginRequiredMixin):
     def get(self, request,slug):
         # handle the get request
         mo=BookingPost.objects.get(slug=slug)
-        v=timess(mo.extra)
-        context={'post':mo,'times':v}
-        return render(request, 'bookapp.html',context)
+        context={'post':mo,}
+        current_time = datetime.now().replace(second=0, microsecond=0)
+        
+        if(mo.is_book):
+            return redirect("index")
+        return render(request, 'payment/booknow.html',context)
     
 
 def refund(request):
@@ -345,7 +328,9 @@ def approveOrreject(request):
 
             bk=BookBy.objects.get(id=slug,saloon=request.user)
             abs=AboutusUs.objects.first()
-
+            if tr=='3':
+                bk.hideforowner=True
+                messages.success(request, f'Delete.')
             if tr=='0':
                 bk.confirm=False
                 bk.reject=True
@@ -354,19 +339,12 @@ def approveOrreject(request):
                 w[0].save()
                 subject = "Appointment Rejected"
                 bookin=bk.booking
-                choice_time = datetime.strptime(bk.date.strip(), '%Y-%m-%d').replace(second=0, microsecond=0,minute=0,hour=0)
-                ct=choice_time.strftime('%d %b %Y')
-                if bookin.extra.get(ct.strip()) is not None:
-                    if bookin.extra[ct].get(bk.time.strip()) is not None:
-                        bookin.extra[ct][bk.time.strip()]=False
-                    
-                else:
-                    bookin.extra['dates'].append(ct)
-                    bookin.extra[ct][bk.time.strip()]=False
+                bookin.is_book=False
+                bookin.is_active=True
                 current_site = get_current_site(request)
 
                 bookin.save()
-                message = render_to_string('booking/bookingreject.html', {
+                message = render_to_string('booking/email/bookingreject.html', {
                     'request': request,
                     'user': bk.user,
                     'user2': bk.saloon,'about':abs,
@@ -395,7 +373,7 @@ def approveOrreject(request):
                 
                 subject = "Appointment Confirmed"
                 bk.confirm=True
-                message = render_to_string('booking/bookingconfirm.html', {
+                message = render_to_string('booking/email/bookingconfirm.html', {
                     'domain': current_site.domain,
                     'request': request,
                     'user': bk.user,

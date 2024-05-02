@@ -164,6 +164,12 @@
             {%endfor%}
           </ul>
         </div>
+       
+        {% if form.services.errors %}
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {{ form.services.errors.as_text }}
+        </p>
+        {% endif %} 
         <div>
           <label
             for="datePicker"
@@ -186,11 +192,18 @@
           {% endif %}
         </div>
         <label
-          for="dropdownSearchButton2"
+          for="id_times"
           class="block mb-2 text-sm font-medium text-white dark:text-white"
-          >Add Time</label
+          >Time</label
         >
-        <div class="relative">
+        <div class="relative text-white">
+          
+          <input type="time" id="id_times"  name="times" class="input 
+          bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5
+            p-2.5 " min="00:00" max="24:00" value="14:00" required />
+      </div>
+      
+        {% comment %} <div class="relative">
           <div
             class="absolute inset-y-0 end-0 mr-2 p-1 flex items-center ps-3.5 pointer-events-none"
           >
@@ -217,9 +230,9 @@
             class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
             type="button"
           />
-        </div>
+        </div> {% endcomment %}
 
-        <div
+        {% comment %} <div
           id="dropdownSearch2"
           class="z-10 hidden bg-bg2 rounded-lg shadow mq450:w-11/12 shadow w-1/4 md:w-1/4 mq825:w-2/4 p-5 text-white"
         >
@@ -244,11 +257,11 @@
                   class=" id_times_{{id}} w-full ms-2 text-sm font-medium"
                   >{{name}}</label
                 >
-              </div>
-            </li>
+              </div> {% endcomment %}
+            {% comment %} </li>
             {%endfor%}
           </ul>
-        </div>
+        </div> {% endcomment %}
         {% if form.times.errors %}
         <p class="mt-2 text-sm text-red-600 dark:text-red-500">
           {{ form.times.errors.as_text }}
@@ -356,37 +369,15 @@
 
       // Display selected items
     }
-    function handleCheckboxChange2(event) {
-      const selectedItemsContainer1 = document.getElementById(
-        "dropdownSearchButton2"
-      );
-      const selectedItemsContainer = document.getElementById("selected2");
-      const selectedItems = Array.from(
-        document.querySelectorAll('input[name="times"]:checked')
-      ).map(
-        (checkbox) =>
-          document.getElementsByClassName("id_times_" + checkbox.value)[0]
-            .textContent
-      );
-
-      // Clear previous content
-      selectedItemsContainer1.value = selectedItems.toString();
-
-      // Display selected items
-    }
+   
     const checkboxes = document.querySelectorAll('input[name="services"]');
     checkboxes.forEach((checkbox) =>
       checkbox.addEventListener("change", handleCheckboxChange)
     );
 
-    const checkboxes2 = document.querySelectorAll('input[name="times"]');
-    checkboxes2.forEach((checkbox) =>
-      checkbox.addEventListener("change", handleCheckboxChange2)
-    );
+   
     flatpickr("#datePicker", {
-      mode: "multiple",
       disableMobile: true,
-
       dateFormat: "d M Y", // Format for displaying day name (short), month (short), and day of the month
       minDate: "today", // Start from today's date
       maxDate: new Date().fp_incr(7), // Allow selection within the next 7 days

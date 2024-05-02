@@ -9,6 +9,7 @@ from django.contrib.auth.views import redirect_to_login
 from django.views.generic import ListView
 from django.views.generic.edit import FormView,FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+from payment.models import Wallet
 from salon.forms import BookingPostForm,FilterBook
 from salon.models import BookingPost,BookBy, SaloonReview
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
@@ -89,7 +90,7 @@ class allreviews(ListView):
     paginate_by=10
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect_to_login(self.request.get_full_path(), reverse_lazy('login'))
+            return redirect_to_login(self.request.get_full_path(), reverse_lazy('singin'))
         if not request.user.email_is_verified:
             messages.warning(request,'Verify Your Email First')
 
@@ -108,12 +109,12 @@ class allreviews(ListView):
 class mybookings(ListView):
 
     model = BookingPost
-    template_name = "mybookings.html"
+    template_name = "booking/owner/ownerallpost.html"
     context_object_name = 'bookings'
     paginate_by=10
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect_to_login(self.request.get_full_path(), reverse_lazy('login'))
+            return redirect_to_login(self.request.get_full_path(), reverse_lazy('singin'))
         if not request.user.email_is_verified:
             messages.warning(request,'Verify Your Email First')
 
@@ -122,7 +123,7 @@ class mybookings(ListView):
         return super().dispatch(request, *args, **kwargs)
     def get_queryset(self):
         # self.publisher = get_object_or_404(BookingPost, user=self.request.user)
-        return BookingPost.objects.filter(user=self.request.user).order_by('-date_posted').distinct()
+        return BookingPost.objects.filter(user=self.request.user,is_hide=False,is_book=False).order_by('-date_posted').distinct()
     def get_template_names(self):
         if self.request.user.is_salonowner:  # a certain check
             return [self.template_name]
@@ -131,7 +132,7 @@ class mybookings(ListView):
 class mybooking(ListView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect_to_login(self.request.get_full_path(), reverse_lazy('login'))
+            return redirect_to_login(self.request.get_full_path(), reverse_lazy('singin'))
         if not request.user.email_is_verified:
             messages.warning(request,'Verify Your Email First')
 
@@ -141,32 +142,32 @@ class mybooking(ListView):
 
     model = BookBy
     raise_exception=False
-    template_name = "userbooking/salonnallbooking.html"
+    template_name = "booking/owner/salonnallbooking.html"
     context_object_name = 'bookings'
     paginate_by=10
     def get_queryset(self):
         # self.publisher = get_object_or_404(BookingPost, user=self.request.user)
         if self.request.user.is_salonowner:
-            return BookBy.objects.filter(saloon=self.request.user,payment=True).order_by('-date_create')
+            return BookBy.objects.filter(saloon=self.request.user,payment=True,hideforowner=False).order_by('-date_create')
         else:
-            return BookBy.objects.filter(user=self.request.user,payment=True).order_by('-date_create')
+            return BookBy.objects.filter(user=self.request.user,payment=True,hideforuser=False).order_by('-date_create')
 
     
     def get_template_names(self):
         if self.request.user.is_salonowner:  # a certain check
-            return ["userbooking/salonnallbooking.html"]
+            return ["booking/owner/salonnallbooking.html"]
         else:
             return ["userbooking/userallbooking.html"]
 
 
 class createPost( SuccessMessageMixin,LoginRequiredMixin,FormView):
-    template_name = "booking/createpost.html"
+    template_name = "booking/owner/createpost.html"
     form_class = BookingPostForm
-    success_url = reverse_lazy("mybookings")
+    success_url = reverse_lazy("ownerallpost")
     success_message="Post Create"
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect_to_login(self.request.get_full_path(), reverse_lazy('login'))
+            return redirect_to_login(self.request.get_full_path(), reverse_lazy('singin'))
         if not request.user.email_is_verified:
             messages.warning(request,'Verify Your Email First')
 
@@ -207,11 +208,15 @@ class PostListView( FormMixin,ListView):
                 selection =form.cleaned_data.get('services')
                 date =form.cleaned_data.get('dates')
                 if(date and selection ):
-                    queryset=BookingPost.objects.filterspecfice(date.strip(),selection).order_by("-user__rating")
+                    ct=datetime.strptime(date.strip(),'%d %b %Y')
+
+                    queryset=BookingPost.objects.filterspecfice(ct,selection).order_by("-user__rating")
                 elif(selection):
                     queryset = BookingPost.objects.filterspecficesv(selection).order_by("-user__rating")
                 elif(date):
-                    queryset = BookingPost.objects.filterdatespecficesv(date.strip()).order_by("-user__rating")
+                    ct=datetime.strptime(date.strip(),'%d %b %Y')
+
+                    queryset = BookingPost.objects.filterdatespecficesv(ct).order_by("-user__rating")
        
         return queryset
     
@@ -272,11 +277,12 @@ def deactive(request):
             mo=BookingPost.objects.get(slug=slug,user=request.user)
             if tr=='0':
                 mo.is_active=False
+                mo.is_hide=True
             if tr=='1':
                 mo.is_active=True
 
             mo.save()
-            messages.success(request, f'{mo.title} update.')
+            messages.success(request, f'{mo.title} Delete.')
 
             return HttpResponse('li')
         else:
@@ -291,12 +297,29 @@ def canclebook(request):
     if is_ajax:
         if request.method == "POST":
             slug=request.POST.get('slug')
+            type=request.POST.get('type')
+            
+            if type=='1':
+                mo=BookBy.objects.get(id=slug,user=request.user)
+                mo.hideforuser=True
+                mo.save()
+                messages.success(request, f'Delete.')
+            else:
 
-            mo=BookBy.objects.get(id=slug,user=request.user)
+                mo=BookBy.objects.get(id=slug,user=request.user)
+                bo=mo.booking
+                bo.is_book=False
+                bo.is_active=True
+                bo.save()
+                if(mo.payment):
+                    mo.price;
+                    w=Wallet.objects.get_or_create(user=mo.user,)
+                    w[0].amount= w[0].amount+mo.price
+                    w[0].save()
 
-            mo.cancle=True
-            mo.save()
-            messages.success(request, f' Cancel.')
+                mo.cancle=True
+                mo.save()
+                messages.success(request, f' Cancel.')
 
             return HttpResponse('li')
         else:
