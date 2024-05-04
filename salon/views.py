@@ -28,7 +28,7 @@ def index(request):
     else:
         reviews=AppReview.objects.filter(Q(showin=True)).order_by('-bid')
 
-    p=BookingPost.objects.search().order_by("-user__rating").order_by('-bookdatetime')[:10]
+    p=BookingPost.objects.search().order_by("-user__rating").order_by('bookdatetime')[:10]
     form=FilterBook()
     ab=AboutusUs.objects.first()
 
@@ -199,7 +199,7 @@ class PostListView( FormMixin,ListView):
     # new method added ⬇️
     def get_queryset(self):
       
-        queryset=BookingPost.objects.search().order_by("-user__rating").order_by('-bookdatetime')
+        queryset=BookingPost.objects.search().order_by("-user__rating").order_by('bookdatetime')
         if self.request.POST.get("services")or self.request.POST.get("dates"):
             form = FilterBook(self.request.POST)
         
@@ -210,13 +210,13 @@ class PostListView( FormMixin,ListView):
                 if(date and selection ):
                     ct=datetime.strptime(date.strip(),'%d %b %Y')
 
-                    queryset=BookingPost.objects.filterspecfice(ct,selection).order_by("-user__rating").order_by('-bookdatetime')
+                    queryset=BookingPost.objects.filterspecfice(ct,selection).order_by("-user__rating").order_by('bookdatetime')
                 elif(selection):
-                    queryset = BookingPost.objects.filterspecficesv(selection).order_by("-user__rating").order_by('-bookdatetime')
+                    queryset = BookingPost.objects.filterspecficesv(selection).order_by("-user__rating").order_by('bookdatetime')
                 elif(date):
                     ct=datetime.strptime(date.strip(),'%d %b %Y')
 
-                    queryset = BookingPost.objects.filterdatespecficesv(ct).order_by("-user__rating").order_by('-bookdatetime')
+                    queryset = BookingPost.objects.filterdatespecficesv(ct).order_by("-user__rating").order_by('bookdatetime')
        
         return queryset
     
