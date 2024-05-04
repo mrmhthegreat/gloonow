@@ -251,6 +251,8 @@ class bookings(View,LoginRequiredMixin):
                 Util.send_email(email)
                 Util.send_email(email2)
                 return redirect('success')
+            abo=AboutusUs.objects.first()
+            
             checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[
@@ -259,10 +261,10 @@ class bookings(View,LoginRequiredMixin):
                         "currency": "usd",
                         "unit_amount": int(price.price) * 100,
                         "product_data": {
-                            "name": "Glo-Now Booking",
+                            "name": f"{abo.company} Booking",
                             "description": f"{bookby.user.first_name} Book {bookby.saloon.company} {bookby.date} {bookby.time} For {[x.name for x in bookby.services.all()]}",
                             "images": [
-                                f"{settings.BACKEND_DOMAIN}/{bookby.saloon.profile_image.url}"
+                                f"{abo.logoimage.url}"
                             ],
                         },
                     },
