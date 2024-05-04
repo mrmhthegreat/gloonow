@@ -258,7 +258,7 @@ class bookings(View,LoginRequiredMixin):
             line_items=[
                 {
                     "price_data": {
-                        "currency": "usd",
+                        "currency": "nzd",
                         "unit_amount": int(price.price) * 100,
                         "product_data": {
                             "name": f"{abo.company} Booking",
