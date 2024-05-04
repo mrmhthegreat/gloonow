@@ -259,7 +259,7 @@ class bookings(View,LoginRequiredMixin):
                         "currency": "usd",
                         "unit_amount": int(price.price) * 100,
                         "product_data": {
-                            "name": "Glow Booking",
+                            "name": "Glo-Now Booking",
                             "description": f"{bookby.user.first_name} Book {bookby.saloon.company} {bookby.date} {bookby.time} For {[x.name for x in bookby.services.all()]}",
                             "images": [
                                 f"{settings.BACKEND_DOMAIN}/{bookby.saloon.profile_image.url}"
