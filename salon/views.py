@@ -199,7 +199,7 @@ class PostListView( FormMixin,ListView):
     # new method added ⬇️
     def get_queryset(self):
       
-        queryset=BookingPost.objects.search().order_by('-bookdatetime').order_by("-user__rating")
+        queryset=BookingPost.objects.search().order_by('bookdatetime').order_by("-user__rating")
         if self.request.POST.get("services")or self.request.POST.get("dates"):
             form = FilterBook(self.request.POST)
         

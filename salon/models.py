@@ -39,8 +39,9 @@ class BookingPostQuerySet(models.QuerySet):
         return qs.distinct()
      
     def filterspecficesv(self,services,active=True):
+        current_time = datetime.now().replace(second=0, microsecond=0)
         
-        lookup=Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        lookup=Q(bookdatetime__gte=current_time)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         
         
         qs=self.filter(lookup)
