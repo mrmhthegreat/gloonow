@@ -96,9 +96,8 @@ class BookingPostForm(forms.ModelForm):
     ]
     dates = forms.CharField(label="Dates", widget=forms.TextInput)
     times = forms.TimeField(label="Times")
-    services = forms.ModelMultipleChoiceField(
-        queryset=Services.objects.all(),
-        widget=forms.CheckboxSelectMultiple)
+    services = forms.CharField(
+        widget=forms.TextInput)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(BookingPostForm, self).__init__(*args, **kwargs)
@@ -110,7 +109,9 @@ class BookingPostForm(forms.ModelForm):
         # this method didn't change it.
     
     def clean(self, *args, **kwargs):
+      
         cleaned_data = super(BookingPostForm, self).clean(*args, **kwargs)
+
         services =cleaned_data.get('services')
         dates =cleaned_data.get('dates')
         b=self.request.POST.get('times')
@@ -119,9 +120,6 @@ class BookingPostForm(forms.ModelForm):
             self.add_error('dates', "Error Dates")
        
         if services==None:
-            self.add_error('services', "Select Services")
-
-        elif len(services)<1:
             self.add_error('services', "Select Service")
 
         time_obj = datetime.strptime(b, '%H:%M')
@@ -173,9 +171,9 @@ class BookingPostForm(forms.ModelForm):
         slugify_instance(post)
 
         post.save()
-        for sv in services:
-            a=Services.objects.get(id=sv.pk)
-            post.services.add(a)
+        
+        a=Services.objects.get(id=services)
+        post.services.add(a)
         # for i in :
         
         # post.services=request.true

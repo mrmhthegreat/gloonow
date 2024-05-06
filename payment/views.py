@@ -133,7 +133,7 @@ class bookings(View,LoginRequiredMixin):
     def post(self, request,slug):
         # handle the post request
         mo=BookingPost.objects.get(slug=slug)
-        service=request.POST.getlist('services')
+        service=request.POST.get('services')
         
         if  request.user.is_salonowner or not self.request.user.is_authenticated:
             messages.warning(request,'You Can not Book Register As Normal User')
@@ -148,11 +148,12 @@ class bookings(View,LoginRequiredMixin):
       
         has=mo.is_book
         
-      
-        if( len(service)<1 or  has):
-            messages.warning(request,'Pick Date, Time and Serivecs')
-            v=timess(mo.extra)
-            context={'post':mo,'times':v}
+        if(  has):
+            messages.warning(request,'Sorry Already Booked')
+            return redirect('index')
+        if( service=='None' or  has):
+            messages.warning(request,'Select Service')
+            context={'post':mo,}
             return render(request, 'payment/booknow.html',context)
        
         else:

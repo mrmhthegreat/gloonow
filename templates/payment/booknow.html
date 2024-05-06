@@ -238,74 +238,20 @@
             
           </div>  
                     <label for="dropdownSearchButton3" class="block mb-2 text-sm font-medium text-white dark:text-white">Service</label>
-                       
-                    <div class="relative">
-                      <div
-                      class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none"
-                    >
-                      <svg
-                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      id="dropdownSearchButton3"
-                      data-dropdown-toggle="dropdownSearch2"
-                      placeholder="Select Service"
-                      value="Select Service"
-                      
-                      class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full ps-10 p-2.5 p-4"
-                      type="button"
-                    />
-                  </div>
-                  <!-- Dropdown menu -->
-                  <div
-                    id="dropdownSearch2"
-                    class="z-10 hidden bg-bg2 rounded-lg mq450:w-11/12 shadow w-1/4 md:w-1/4 mq825:w-2/4 shadow w-60 text-white"
-                  >
-                  
-                    <ul
-                      class="h-48 pb-3 overflow-y-auto text-sm text-white "
-                      aria-labelledby="dropdownSearchButton3"
-                      id="selected"
-                    >
-                    {%for id in post.services.all %}
-                    <li class="text-white hover:text-black">
-                      <div class="flex items-center p-2 hover:bg-burlywood-100">
-                         <input
-                          id="id_services_{{id.id}}"
-                          type="checkbox" name="services"
-                          value="{{id.id}}" 
-                         
-              
-                          class="w-4 h-4 text-burlywood-100 bg-gray-100 border-burlywood-100 rounded focus:ring-burlywood-100 focus:ring-2"
-                        />
-              
-                        
-                        <label
-                          for="id_services_{{id.id}}"
-                          class="id_services_{{id.id}} w-full ms-2 text-sm font-medium"
-                          >{{id.name}}</label
-                        >
-                      </div>
-                    </li>
+                    <select name="services" id="countries" class="input seb bg-slategray border  border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+                      <option  value='None' selected>Choose a Service</option>
+                   
+                      {%for id in post.services.all %}
+
+                      <option class="hover:bg-burlywood-100" value="{{id.id}}">{{id.name}}</option>
                     {%endfor%}
-                    
-                    </ul>
-                  </div>
+
+                    </select>
+                   
+               
                 
                 
-                  <ul id="times"  class="grid w-full gap-6 grid-cols-3 mq450:grid-cols-3  mq380:grid-cols-1 mq449:grid-cols-2 md:grid-cols-3">
-                      
-                      
-                  </ul>
+                  
                   
                     <label for="message" class="block mb-2 text-sm font-medium text-white">Your message</label>
                     <textarea id="message" name='message' rows="4" class="block p-2.5 w-full text-sm text-white bg-slategray rounded-lg border border-gray-700 focus:ring-1 focus:ring-primary focus:border-primary " placeholder="Write your thoughts here..."></textarea>
@@ -334,28 +280,5 @@
 
 
 
-<script type="text/javascript">
-  
-  
-  function handleCheckboxChange2(event) {
-    const selectedItemsContainer1 = document.getElementById(
-      "dropdownSearchButton3"
-    );
-    const selectedItemsContainer = document.getElementById("selected");
-    const selectedItems = Array.from(
-      document.querySelectorAll('input[name="services"]:checked')
-    ).map((checkbox) => document.getElementsByClassName('id_services_'+checkbox.value)[0].textContent);
 
-    // Clear previous content
-    selectedItemsContainer1.value = selectedItems.toString();
-
-    // Display selected items
-  }
-  const checkboxes2 = document.querySelectorAll('input[name="services"]');
-  checkboxes2.forEach((checkbox) =>
-  checkbox.addEventListener("change", handleCheckboxChange2)
-  );
-
-
-</script>
 {%endblock script%}

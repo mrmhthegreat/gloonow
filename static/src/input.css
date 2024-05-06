@@ -226,3 +226,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   /* Change the color of the arrow buttons */
   color: #ffffff;
 }
+
+option:hover {
+  background-color: #cca876 !important;
+}
+option:checked  {
+  background-color: #cca876 !important;
+}
