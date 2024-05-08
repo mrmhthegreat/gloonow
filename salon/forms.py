@@ -174,8 +174,9 @@ class BookingPostForm(forms.ModelForm):
 
         post.save()
         
-        a=Services.objects.get(id=services)
-        post.services.add(a)
+        for sv in services:
+            a=Services.objects.get(id=sv.pk)
+            post.services.add(a)
         # for i in :
         
         # post.services=request.true
