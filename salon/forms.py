@@ -96,8 +96,9 @@ class BookingPostForm(forms.ModelForm):
     ]
     dates = forms.CharField(label="Dates", widget=forms.TextInput)
     times = forms.TimeField(label="Times")
-    services = forms.CharField(
-        widget=forms.TextInput)
+    services = forms.ModelMultipleChoiceField(
+        queryset=Services.objects.all(),
+        widget=forms.CheckboxSelectMultiple)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(BookingPostForm, self).__init__(*args, **kwargs)
@@ -119,9 +120,10 @@ class BookingPostForm(forms.ModelForm):
         if dates==None:
             self.add_error('dates', "Error Dates")
        
-        if services==None:
-            self.add_error('services', "Select Service")
-
+        if services ==None:
+            self.add_error('services', "Select Services")
+        elif len(services)<1:
+            self.add_error('services', "Select Services")
         time_obj = datetime.strptime(b, '%H:%M')
         current_time = datetime.now().replace(second=0, microsecond=0)
 

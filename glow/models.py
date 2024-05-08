@@ -31,6 +31,8 @@ class ContactUs(models.Model):
 class AboutusUs(models.Model):
     subject=models.CharField(max_length=5000, null=True,blank=True,default='')
     company=models.CharField(max_length=120, null=True,blank=True,default='')
+    fburl=models.CharField(max_length=500, null=True,blank=True,default='')
+    instaurl=models.CharField(max_length=500, null=True,blank=True,default='')
     logoimage=models.ImageField(upload_to='media/about',)
 
     email=models.EmailField(max_length=255, null=True,blank=True,default='')
