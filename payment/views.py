@@ -172,10 +172,10 @@ class bookings(View,LoginRequiredMixin):
             slugify_instance(bookby)
             
             bookby.save()
-            for sv in service:
-                a=Services.objects.get(id=sv)
-                bookby.services.add(a)
-            print([x.name for x in bookby.services.all()])
+            
+            a=Services.objects.get(id=service)
+            bookby.services.add(a)
+
             stripe.api_key = settings.STRIPE_SECRET_KEY
 
             price = Price.objects.first()
