@@ -85,7 +85,7 @@ class StripeWebhookView(View):
                 'date':bb.date,
                 'time':bb.time,'about':abs,
                 'address':bb.address,
-                'services':[x.name for x in bb.services.all()],
+                'services':', ' .join([x.name for x in bb.services.all()]),
                 'salon':bb.saloon.company,
                 'domain': current_site.domain,
                 'number':bb.saloon.phone_number,
@@ -100,7 +100,7 @@ class StripeWebhookView(View):
                 'date':bb.date,
                 'time':bb.time,'about':abs,
                 'address':bb.address,
-                'services':[x.name for x in bb.services.all()],
+                'services':',' .join([x.name for x in bb.services.all()]),
                 'salon':bb.saloon.company,
                 'domain': current_site.domain,
                 'number':bb.saloon.phone_number,
@@ -134,11 +134,10 @@ class bookings(View,LoginRequiredMixin):
         # handle the post request
         mo=BookingPost.objects.get(slug=slug)
         service=request.POST.get('services')
-        
+        print(service)
         if  request.user.is_salonowner or not self.request.user.is_authenticated:
             messages.warning(request,'You Can not Book Register As Normal User')
-            v=timess(mo.extra)
-            context={'post':mo,'times':v}
+            context={'post':mo}
             return render(request, 'payment/booknow.html',context)
 
 
@@ -176,7 +175,7 @@ class bookings(View,LoginRequiredMixin):
             for sv in service:
                 a=Services.objects.get(id=sv)
                 bookby.services.add(a)
-            
+            print([x.name for x in bookby.services.all()])
             stripe.api_key = settings.STRIPE_SECRET_KEY
 
             price = Price.objects.first()
@@ -218,7 +217,7 @@ class bookings(View,LoginRequiredMixin):
                     'domain': current_site.domain,
                     'time':bookby.time,
                     'address':bookby.address,
-                    'services':[x.name for x in bookby.services.all()],
+                    'services':',' .join([x.name for x in bookby.services.all()]),
                     'salon':bookby.saloon.company,
                     'domain': current_site.domain,
                     'number':bookby.saloon.phone_number,
@@ -233,7 +232,7 @@ class bookings(View,LoginRequiredMixin):
                     'domain': current_site.domain,
                     'time':bookby.time,
                     'address':bookby.address,
-                    'services':[x.name for x in bookby.services.all()],
+                    'services':',' .join([x.name for x in bookby.services.all()]),
                     'salon':bookby.saloon.company,
                     'domain': current_site.domain,
                     'number':bookby.saloon.phone_number,
@@ -251,7 +250,7 @@ class bookings(View,LoginRequiredMixin):
                 email2.content_subtype = 'html'
                 Util.send_email(email)
                 Util.send_email(email2)
-                return redirect('success')
+                return redirect('mybooking')
             abo=AboutusUs.objects.first()
             
             checkout_session = stripe.checkout.Session.create(
@@ -263,7 +262,7 @@ class bookings(View,LoginRequiredMixin):
                         "unit_amount": int(price.price) * 100,
                         "product_data": {
                             "name": f"{abo.company} Booking",
-                            "description": f"{bookby.user.first_name} Book {bookby.saloon.company} {bookby.date} {bookby.time} For {[x.name for x in bookby.services.all()]}",
+                            "description": f"{bookby.user.first_name} Book {bookby.saloon.company} {bookby.date} {bookby.time} For {',' .join([x.name for x in bookby.services.all()])}",
                             "images": [
                                 f"{abo.logoimage.url}"
                             ],
@@ -355,7 +354,7 @@ def approveOrreject(request):
                     'date':bk.date,
                     'time':bk.time,
                     'address':bk.address,
-                    'services':[x.name for x in bk.services.all()],
+                    'services':',' .join([x.name for x in bk.services.all()]),
                     'salon':bk.saloon.company,
                     'domain': current_site.domain,
                     'number':bk.saloon.phone_number,
@@ -384,7 +383,7 @@ def approveOrreject(request):
                     'date':bk.date,
                     'time':bk.time,'about':abs,
                     'address':bk.address,
-                    'services':[x.name for x in bk.services.all()],
+                    'services':',' .join([x.name for x in bk.services.all()]),
                     'salon':bk.saloon.company,
                     'domain': current_site.domain,
                     'number':bk.saloon.phone_number,

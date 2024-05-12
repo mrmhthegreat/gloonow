@@ -115,7 +115,7 @@ def verify_email_done(request):
     if request.user.email_is_verified:
         return redirect('index')
     return render(request, 'authentication/verfiy_done.html',{'about':abs})
-@login_required
+
 def verify_email_confirm(request, uidb64, token):
     abs=AboutusUs.objects.first()
     try:
@@ -133,7 +133,6 @@ def verify_email_confirm(request, uidb64, token):
         messages.warning(request, 'The link is invalid.')
     return render(request, 'authentication/verify_email_confirm.html',{'about':abs})
 
-@login_required
 def verify_email_complete(request):
     abs=AboutusUs.objects.first()
 
