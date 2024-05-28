@@ -1,0 +1,235 @@
+{% load widget_tweaks %}
+<div class="w-1/3 md:w-1/3 mq825:w-full lg:w-full bg-bg2 rounded-lg shadow">
+    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+     
+      <form
+        class="space-y-4 md:space-y-6"
+        method="POST"
+        action="{% url 'addAdvance' %}" id="advform"
+      >
+        {% csrf_token %}
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+          <div>
+            <label
+              for="id_name"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
+              >Name</label
+            >
+            
+            {% render_field form.name  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 " %}
+            
+            {% if form.name.errors %}
+
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              {{ form.name.errors.as_text }}
+            </p>
+            {% endif %}
+
+          </div>
+          <div>
+            <label
+              for="id_email"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
+              >Email Address</label
+            >
+            {% render_field form.email value=request.user.email class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 " %} {% if form.email.errors %}
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+              {{ form.email.errors.as_text }}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <label
+          for="servicesadv"
+          class="block mb-2 text-sm font-medium text-white dark:text-white"
+          >Service you want</label
+        >
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 end-0 mr-2 p-1 flex items-center ps-3.5 pointer-events-none"
+          >
+            <svg
+              class="w-4 h-4 text-gray-500"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m19 9-7 7-7-7"
+              />
+            </svg>
+          </div>
+          <input
+            id="dropdownSearchButtonadv"
+            data-dropdown-toggle="dropdownSearchadv"
+            placeholder="Select date"
+            value="Select Services"
+            class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            type="button"
+          />
+        </div>
+
+        <div
+          id="dropdownSearchadv"
+          class="z-10 hidden bg-bg2 rounded-lg mq450:w-11/12 shadow w-1/4 md:w-1/4 mq825:w-2/4 lg:w-2/3 p-5 text-white"
+        >
+          <ul
+            class="h-48 pb-3 overflow-y-auto text-sm text-white"
+            aria-labelledby="dropdownSearchButtonadv"
+            id="selectedadv"
+          >
+            {%for id,name in form.servicesadv.field.choices %}
+            <li class="text-white hover:text-black">
+              <div class="flex items-center p-2 hover:bg-burlywood-100">
+                <input
+                  id="id_services_{{id}}"
+                  type="checkbox"
+                  name="servicesadv"
+                  value="{{id}}"
+                  class="w-4 h-4 text-burlywood-100 bg-gray-100 border-burlywood-100 rounded focus:ring-burlywood-100 focus:ring-2"
+                />
+
+                <label
+                  for="id_services_{{id}}"
+                  class=" id_services_{{id}} w-full ms-2 text-sm font-medium"
+                  >{{name}}</label
+                >
+              </div>
+            </li>
+            {%endfor%}
+          </ul>
+        </div>
+        <div>
+          <label
+            for="datePickeradv"
+            class="block mb-2 text-sm font-medium text-white dark:text-white"
+            >Preferred date(s)</label
+          >
+          <input
+            type="text"
+            id="datePickeradv"
+            placeholder="Select Dates"
+            name="datesadv"
+            required=""
+            class="input bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+          />
+
+          {% if form.datesadv.errors %}
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {{ form.datesadv.errors.as_text }}
+          </p>
+          {% endif %}
+        </div>
+        <label
+          for="dropdownSearchButton2adv"
+          class="block mb-2 text-sm font-medium text-white dark:text-white"
+          >Preferred time(s)</label
+        >
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 end-0 mr-2 p-1 flex items-center ps-3.5 pointer-events-none"
+          >
+            <svg
+              class="w-4 h-4 text-gray-500"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m19 9-7 7-7-7"
+              />
+            </svg>
+          </div>
+          <input
+            id="dropdownSearchButton2adv"
+            data-dropdown-toggle="dropdownSearch2adv"
+            placeholder="Select Time"
+            value="Select Time"
+            class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            type="button"
+          />
+        </div>
+
+        <div
+          id="dropdownSearch2adv"
+          class="z-10 hidden bg-bg2 rounded-lg shadow mq450:w-11/12 shadow w-1/4 md:w-1/4 mq825:w-2/4 p-5 text-white"
+        >
+          <ul
+            class="h-48 pb-3 overflow-y-auto text-sm text-white"
+            aria-labelledby="dropdownSearchButton2adv"
+            id="selected2adv"
+          >
+          
+            {%for id,name in form.timesadv.field.choices %}
+            <li class="text-white hover:text-black">
+              <div class="flex items-center p-2 hover:bg-burlywood-100">
+                <input
+                  id="id_times_{{id}}"
+                  type="checkbox"
+                  name="timesadv"
+                  value="{{id}}"
+                  class="w-4 h-4 text-burlywood-100 bg-gray-100 border-burlywood-100 rounded focus:ring-burlywood-100 focus:ring-2"
+                />
+
+                <label
+                  for="id_times{{id}}"
+                  class=" id_times_{{id}} w-full ms-2 text-sm font-medium"
+                  >{{name}}</label
+                >
+              </div>
+            </li>
+            {%endfor%}
+          </ul>
+        </div>
+        {% if form.timesadv.errors %}
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {{ form.timesadv.errors.as_text }}
+        </p>
+        {% endif %} {% comment %}
+        <div>
+          <label
+            for="phone"
+            class="block mb-2 text-sm font-medium text-white dark:text-white"
+            >Add Time</label
+          >
+          <input
+            type="time"
+            id="multiTimePicker"
+            placeholder="Select Time Ranges"
+            class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+          />
+
+          {% if form.time.errors %}
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+            {{ form.time.errors .as_text }}
+          </p>
+          {% endif %}
+        </div>
+        {% endcomment %} {% comment %}
+        <ul
+          id="time"
+          class="grid w-full gap-6 grid-cols-2 mq450:grid-cols-2 mq380:grid-cols-1 mq449:grid-cols-2 md:grid-cols-2"
+        ></ul>
+        {% endcomment %}
+        
+
+       
+        <button
+          type="button"
+          onclick="myfun();"
+          class="w-full text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+        >
+          Let Me Know 
+        </button>
+      </form>
+    </div>
+  </div>

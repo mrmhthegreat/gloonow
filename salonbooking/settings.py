@@ -31,9 +31,10 @@ INSTALLED_APPS = [
     'widget_tweaks', 
     'compressor',
     'salon',
+       'analytical',
     'authentication',
     'glow',
-     "phonenumber_field",'payment'
+     "phonenumber_field",'payment','rest_framework',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -157,3 +158,4 @@ AWS_S3_VERIFY = True
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = 'G-H99RE14WV7'

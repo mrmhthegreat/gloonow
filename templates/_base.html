@@ -1,11 +1,14 @@
 <!-- templates/_base.html -->
 
-{% load compress %} {% load static %}
+{% load compress %} 
+{% load analytical %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
-    <meta charset="UTF-8" />
+    {% analytical_head_top %}
+ <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} {% endblock %}</title>
@@ -45,10 +48,13 @@
 
     <script src="{% static 'src/django-htmx.js' %}" defer></script>
     {%block style%}{%endblock style%}
+
+    {% analytical_head_bottom %}
   </head>
 
   <body class="bg-slategray2">
     <!-- Add this -->
+    {% analytical_body_top %}
 
     <nav
       class="[background:linear-gradient(89.61deg,_#203040_35.42%,#203040C9_50.52%,#25374A98_65.11%,#25374A98_78.13%,#25374A73)] border-gray-200 text-white"
@@ -387,5 +393,7 @@
     <script src="{%static 'src/slick.min.js' %}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
     {%block script%}{%endblock script%}
+
+    {% analytical_body_bottom %}
   </body>
 </html>

@@ -1,6 +1,7 @@
 from django.db import models
 
 # from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin)
@@ -27,10 +28,10 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     last_name=models.CharField(max_length=120, null=True,blank=True,default='')
     date_joined = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_salonowner = models.BooleanField(default=False)
     is_staff = models.BooleanField(_('staff status'), default=False,help_text=_('Designates whether the user can log into this admin ''site.'))
     is_active = models.BooleanField(_('active'), default=True,help_text=_('Designates whether this user should be treated as ''active. Unselect this instead of deleting accounts.'))
     is_admin=models.BooleanField(default=False)
-    is_salonowner=models.BooleanField(default=False)
     token=models.CharField(default='token will  genrated in feature',max_length=500)
 
     auth_provider = models.CharField(
@@ -56,11 +57,11 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
         return self.objects.values('groups')
     def __str__(self):
         return self.email
-    # def tokens(self):
-    #     refresh = RefreshToken.for_user(self)
-    #     return {
-    #         'refresh': str(refresh),
-    #         'access': str(refresh.access_token)
-    #     }
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

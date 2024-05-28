@@ -1,6 +1,7 @@
 <!-- templates/index.html -->
 
-{% extends "_base.html" %}{% load static %}
+{% extends "_base.html" %}
+ {% load static %}
 {% load mytags %}
 {% block title %} {{about.company}} {% endblock %}
 
@@ -30,6 +31,54 @@
   
 </div>
 </div>
+<div class="mx-auto p-5  container">
+
+<div class="grid-cols-1 sm:grid md:grid-cols-1 gap-5 sm:px-2.5 sm:grid-cols-1 mq765:grid-cols-1 mq925:grid-cols-1  lg:grid-cols-1 ">
+ 
+  <div
+    class="text-burlywood-100 font-semibold mq450:text-burlywood-100 text-xl mq450:leading-[21px]"
+  >
+  Can’t find
+    <div
+    class="flex flex-col items-start justify-start pt-0 px-0 pb-[22.40000000000009px] box-border gap-[53.6px_0px] max-w-full text-base text-gainsboro mq925:gap-[27px_0px]"
+  >
+    <div class="flex flex-col items-start justify-start max-w-full">
+      <div
+        class="flex flex-row items-start justify-start pt-0 px-0 pb-[9.800000000000182px] box-border max-w-full text-16xl text-white"
+      >
+        <h2
+          class="m-0 relative text-inherit leading-[45.5px] capitalize font-semibold font-inherit mq450:text-2xl mq450:leading-[27px] mq925:text-9xl mq925:leading-[36px]"
+        >
+        Can’t find your perfect appointment?
+        </h2>
+        
+      </div>
+      <div
+      class="self-stretch relative text-lg leading-[170%] text-mintcream z-[5]"
+    >
+      
+      <div
+        class=" leading-[27.2px] text-gainsboro"
+      >
+      Share your details with us, and we’ll notify you as soon as your ideal time slot becomes available!
+    </div>
+      
+    </div>
+     
+     
+  </div>
+  </div>
+ 
+</div>
+<div class="flex flex-row items-start justify-center">
+
+
+{% include "booking/advacebookinng.html"  with form=formss  %}
+</div>
+
+</div>
+</div>
+
 
 <div class='mt-12 p-12'></div>
 {% include "howitwork.html" %}
@@ -72,6 +121,90 @@
             checkboxes.forEach((checkbox) =>
               checkbox.addEventListener("change", handleCheckboxChange)
             );
+
+
+            function handleCheckboxChangeadv(event) {
+              const selectedItemsContainer1 = document.getElementById(
+                "dropdownSearchButtonadv"
+              );
+              const selectedItemsContainer = document.getElementById("selectedadv");
+              const selectedItems = Array.from(
+                document.querySelectorAll('input[name="servicesadv"]:checked')
+              ).map((checkbox) => document.getElementsByClassName('id_services_'+checkbox.value)[0].textContent);
+          
+              // Clear previous content
+              selectedItemsContainer1.value = selectedItems.toString();
+          
+              // Display selected items
+            }
+            
+
+            function handleCheckboxChange2adv(event) {
+              const selectedItemsContainer1 = document.getElementById(
+                "dropdownSearchButton2adv"
+              );
+              const selectedItemsContainer = document.getElementById("selected2adv");
+              const selectedItems = Array.from(
+                document.querySelectorAll('input[name="timesadv"]:checked')
+              ).map(
+                (checkbox) =>
+                  document.getElementsByClassName("id_times_" + checkbox.value)[0]
+                    .textContent
+              );
+        
+              // Clear previous content
+              selectedItemsContainer1.value = selectedItems.toString();
+        
+              // Display selected items
+            }
+            const checkboxesadv = document.querySelectorAll('input[name="servicesadv"]');
+            checkboxesadv.forEach((checkbox) =>
+              checkbox.addEventListener("change", handleCheckboxChangeadv)
+            );
+            const checkboxes2adv = document.querySelectorAll('input[name="timesadv"]');
+            checkboxes2adv.forEach((checkbox) =>
+              checkbox.addEventListener("change", handleCheckboxChange2adv)
+            );
+
+
+            const validateEmail = (email) => {
+              return String(email)
+                .toLowerCase()
+                .match(
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+            };
+
+function myfun(){
+
+  const selectedItems1 = Array.from(
+    document.querySelectorAll('input[name="servicesadv"]:checked')
+  ).map((checkbox) => document.getElementsByClassName('id_services_'+checkbox.value)[0].textContent);
+const selectedItemsContainer = document.getElementById("datePickeradv").value;
+const selectedItemsContainer2 = document.getElementById("id_email").value;
+const selectedItemsContainer3= document.getElementById("id_name").value;
+  const selectedItems = Array.from(
+    document.querySelectorAll('input[name="timesadv"]:checked')
+  )
+   if (!validateEmail(selectedItemsContainer2)) {
+    alert("Enter Valid Email Address");
+    
+    }
+  else if(selectedItems1.length<1){
+alert("Select Service you want");
+  }else if (selectedItemsContainer=="") {
+alert("Select Preferred date(s)");
+
+}else if (selectedItems.length<1) {
+alert("Select Preferred time(s)");
+
+}else{
+  document.getElementById("advform").submit();
+
+}
+
+}
+
     $(".carousel-container").slick({
       autoplay: true,
       slidesToShow: 3,
@@ -100,6 +233,15 @@
     disableMobile:true,
       
       // Format for displaying day name (short), month (short), and day of the month
+      minDate: "today", // Start from today's date
+      maxDate: new Date().fp_incr(7), // Allow selection within the next 7 days
+      static: true, // Prevent the calendar from closing on date selection
+    });
+    flatpickr("#datePickeradv", {
+      mode: "multiple",
+      disableMobile: true,
+
+      dateFormat: "d M Y", // Format for displaying day name (short), month (short), and day of the month
       minDate: "today", // Start from today's date
       maxDate: new Date().fp_incr(7), // Allow selection within the next 7 days
       static: true, // Prevent the calendar from closing on date selection

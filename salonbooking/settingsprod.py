@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'widget_tweaks', 
     'compressor',
     'salon',
-    'authentication',
+    'authentication'
+       'analytical',
     'glow',
      "phonenumber_field",'payment'
 ]
@@ -194,3 +195,4 @@ LOGGING = {
         },
     }
 }
+GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = 'G-H99RE14WV7'

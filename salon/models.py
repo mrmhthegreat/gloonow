@@ -7,10 +7,20 @@ from authentication.models import UserProfile
 from django.db.models import Q
 from django.urls import reverse
 from datetime import datetime,timedelta
-
-from django.db.models.signals import pre_save,post_save
 class Services(models.Model):
     name = models.CharField(max_length=255)
+   
+    perority = models.IntegerField( default=0,null=False,blank=False)
+    class Meta:
+        ordering = ['-perority']
+    def __str__(self):
+        return self.name
+
+
+class TimeAdvance(models.Model):
+    name = models.CharField(max_length=255)
+    starttime=models.TimeField(null=True)
+    endtime=models.TimeField(null=True)
     perority = models.IntegerField( default=0,null=False,blank=False)
     class Meta:
         ordering = ['-perority']
@@ -107,9 +117,27 @@ class SaloonReview(models.Model):
     user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name="userreview")
     saloon = models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name="saloonreview")
     date_create=models.DateField(auto_now_add=True)
+
     def __str__(self):
         return f"{self.user.first_name} Give {self.rating} To {self.saloon.company}"
-  
+class AdvanceRequest(models.Model):
+    slug=models.SlugField(blank=True,null=True,unique=True,max_length=1000)
+    services=models.ManyToManyField(Services,blank=True)
+    email=models.EmailField(max_length=120, null=True,blank=True,default='')
+    name=models.CharField(max_length=220, null=True,blank=True,default='')
+    times=models.ManyToManyField(TimeAdvance,blank=True)
+    user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,null=True,blank=True)
+    extra = models.JSONField(null=True,)
+    sended=models.BooleanField(default=False)
+    date_create=models.DateField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.slug
+    
+ 
+    def __str__(self):
+        return self.slug 
 
 class BookBy(models.Model):
     slug=models.SlugField(blank=True,null=True,unique=True,max_length=1000)

@@ -5,6 +5,9 @@ from . import views
 urlpatterns = [
     path("posts", views.PostListView.as_view(), name="postlist"),
     path("", views.index, name="index"),
+    path("addAdvance/", views.addAdvance, name="addAdvance"),
+
+    
     path("termsandconditions/", views.terms, name="terms"),
     path("privacypolicy/", views.Privacy, name="privacy"),
     path("about/", views.about, name="about"),

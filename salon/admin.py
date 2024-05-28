@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from salon.models import BookingPost,Services,BookBy,SaloonReview
+from salon.models import BookingPost,Services,BookBy,SaloonReview,AdvanceRequest,TimeAdvance
+admin.site.register(TimeAdvance)
+admin.site.register(AdvanceRequest)
 
 @admin.register(SaloonReview)
 class wallet_admin(admin.ModelAdmin):

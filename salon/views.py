@@ -10,7 +10,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormView,FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from payment.models import Wallet
-from salon.forms import BookingPostForm,FilterBook
+from salon.forms import BookingPostForm,FilterBook,AdvancePostForm
 from salon.models import BookingPost,BookBy, SaloonReview
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from salon.myfucn import timess
@@ -30,9 +30,10 @@ def index(request):
 
     p=BookingPost.objects.search().order_by("-user__rating").order_by('bookdatetime')[:10]
     form=FilterBook()
+    fom=AdvancePostForm()
     ab=AboutusUs.objects.first()
 
-    context={'products':p,'forms':form,'reviews':reviews,'about':ab}
+    context={'products':p,'forms':form,'reviews':reviews,'about':ab,'formss':fom}
     return render(request, 'booking/index.html',context)
 
 def terms(request):
@@ -372,3 +373,16 @@ def addreviesw(request):
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
+def addAdvance(request):
+    if request.method == "POST":
+        form = AdvancePostForm(request.POST)
+        if form.is_valid():
+            form.save(request)
+            selection =form.cleaned_data.get('servicesadv')
+            date =form.cleaned_data.get('datesadv')
+            print(selection)
+            print(date)
+
+        return redirect('index')
+    else:
+        return render("404.html")
