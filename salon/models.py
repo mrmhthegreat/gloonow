@@ -126,7 +126,6 @@ class AdvanceRequest(models.Model):
     email=models.EmailField(max_length=120, null=True,blank=True,default='')
     name=models.CharField(max_length=220, null=True,blank=True,default='')
     times=models.ManyToManyField(TimeAdvance,blank=True)
-    user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,null=True,blank=True)
     extra = models.JSONField(null=True,)
     sended=models.BooleanField(default=False)
     date_create=models.DateField(auto_now_add=True)

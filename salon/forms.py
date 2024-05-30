@@ -258,7 +258,6 @@ class AdvancePostForm(forms.ModelForm):
         }
         
         post.extra=data
-        post.user=request.user
         post.email=email
         post.name=name
         post.slug=f"{name}  {email } From {dates[0]} To {dates[-1]}"
