@@ -5,10 +5,13 @@
   class="quote-form z-[5] relative p-8 container mx-auto rounded-lg bg-bg2 container"
 >
       <form class=""  method='POST' action="{% url 'postlist' %}">
-  <div class="grid gap-6 md:grid-cols-3 mq825:grid-cols-2 mq450:grid-cols-1">
+  <div class="grid gap-6 md:grid-cols-4 mq825:grid-cols-2 mq450:grid-cols-1">
                       
        <div class="relative">
-        {% csrf_token %} <div
+        {% csrf_token %} 
+        
+        
+        <div
         class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none"
       >
         <svg
@@ -101,6 +104,20 @@
     
        
     </div>
+    <div>
+
+    <select id="countries" name="regions" required="" class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full ps-10 p-2.5 p-4">
+    
+      {%for id,name in forms.regions.field.choices %}
+      <option 
+     
+      value="{{id}}">{{name}}</option>
+  {%endfor%}
+    </select>
+
+  </div>
+
+
     <button
     type="submit" class="bg-burlywood-100 text-center hover:drop-shadow-[0_5px_5px_#CCA87662] text-white font-bold py-2 rounded mq765:w-full "
     >

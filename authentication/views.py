@@ -8,7 +8,7 @@ from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from glow.models import AboutusUs
 from salonbooking.utils import Util
-from .forms import UserCreationForm,OwnerUserCreationForm
+from .forms import UserCreationForm,OwnerUserCreationForm,OwnerUserChangeForm
 from django.shortcuts import redirect, render
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -16,7 +16,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib import messages
-from .models import UserProfile
+from .models import Region, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.utils.encoding import smart_str, smart_bytes
 from django.views.generic.edit import UpdateView ,FormView
@@ -192,7 +192,8 @@ class userUpdateView(SuccessMessageMixin,UpdateView):
     model = UserProfile
     # specify the fields 
     success_url=reverse_lazy("update")
-    fields = ['address','company','first_name','last_name','phone_number','profile_image']
+    form_class = OwnerUserChangeForm
+    # fields = ['address','company','first_name','last_name','phone_number','profile_image','webistelink','region']
     template_name='authentication/updateaccout.html'
     # can specify success url 
     # url to redirect after successfully 
@@ -209,3 +210,15 @@ class userUpdateView(SuccessMessageMixin,UpdateView):
     def get_object(self, queryset=None): 
         return self.request.user
     
+    # def save(self,request,commit=False):
+    #     # Sets username to email before saving
+    #     user = super().save(commit=False)
+    #     rid = self.cleaned_data.get('regions')
+    #     r=Region.objects.get(id=rid)
+    #     user.region=r 
+    #     user.phone_number=self.cleaned_data.get('phone_number')
+    #     user.webistelink=self.cleaned_data.get('webistelink')
+    #     print(user)
+    #     user.save()
+       
+    #     return user

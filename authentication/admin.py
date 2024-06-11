@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import UserProfile
-
+from .models import UserProfile,Region
+@admin.register(Region)
+class contactUs_admin(admin.ModelAdmin):
+    list_display=['name']
+  
+    search_fields = ["email",'first_name']
 @admin.register(UserProfile)
 class CustomUserAdmin(UserAdmin):
     list_display = ["email",'first_name','last_name', "email_is_verified",'is_salonowner']
@@ -19,7 +23,7 @@ class CustomUserAdmin(UserAdmin):
                     "email",
                     "first_name",
                     "last_name",
-                   
+                   'region',
                     "password1",
                     "password2",
                      "email_is_verified",'address','company','is_active','is_salonowner','phone_number','profile_image'
@@ -29,7 +33,9 @@ class CustomUserAdmin(UserAdmin):
     )
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ("first_name", "last_name",  "rating",   "email_is_verified",'address','company','is_salonowner','phone_number','profile_image')}),
+        ("Personal info", {"fields": ("first_name", "last_name", 
+                   'region','webistelink',
+                                       "rating",   "email_is_verified",'address','company','is_salonowner','phone_number','profile_image')}),
         (
             "Permissions",
             {

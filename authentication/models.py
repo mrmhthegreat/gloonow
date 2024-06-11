@@ -10,10 +10,14 @@ from django.contrib.auth.models import (
 # from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
+
 from .usermanager import CustomUserManager
 AUTH_PROVIDERS = {'google': 'google',
                   'email': 'email'}
-
+class Region(models.Model):
+    name = models.CharField(max_length=700)
+    def __str__(self):
+        return self.name
 class UserProfile(AbstractBaseUser,PermissionsMixin):
     username = None
     email = models.EmailField(max_length=255, unique=True, db_index=True)
@@ -33,7 +37,8 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True,help_text=_('Designates whether this user should be treated as ''active. Unselect this instead of deleting accounts.'))
     is_admin=models.BooleanField(default=False)
     token=models.CharField(default='token will  genrated in feature',max_length=500)
-
+    region=models.ForeignKey(Region,null=True,blank=True,on_delete=models.CASCADE)
+    webistelink=models.CharField(null=True,blank=True,max_length=500)
     auth_provider = models.CharField(
         max_length=255, blank=False,
         null=False, default=AUTH_PROVIDERS.get('email'))

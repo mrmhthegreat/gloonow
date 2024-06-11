@@ -9,12 +9,12 @@ from decouple import config
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'django-insecure-)*spm+1@scyndd!x9anz90x380mg384o-^%ef+2em4%5q&oajo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*",'127.0.0.1','localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -24,21 +24,15 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages', 
-    "whitenoise.runserver_nostatic",
+    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sitemaps',
-    'widget_tweaks', 
-    'compressor',
-    'salon',
+   'widget_tweaks', 'compressor',
+    'salon','authentication','glow',
        'analytical',
-    'authentication',
-    'glow',
-     "phonenumber_field",'payment','rest_framework',
+     "phonenumber_field",'payment'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,7 +53,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages', 
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -144,18 +138,3 @@ BACKEND_DOMAIN = config("BACKEND_DOMAIN")
 PAYMENT_SUCCESS_URL = config("PAYMENT_SUCCESS_URL")
 PAYMENT_CANCEL_URL = config("PAYMENT_CANCEL_URL")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
-
-
-
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY =  config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'glonow'
-AWS_S3_SIGNATURE_NAME = 's3v4',
-AWS_S3_REGION_NAME = 'us-east-1'
-AWS_S3_FILE_OVERWRITE = True
-AWS_DEFAULT_ACL =  None
-AWS_S3_VERIFY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = 'G-H99RE14WV7'

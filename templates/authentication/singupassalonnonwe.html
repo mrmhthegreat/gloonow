@@ -60,13 +60,26 @@
                          </div>
                         
                     </div>
+                    <label for="countries" class="block mb-2 text-sm font-medium text-white dark:text-white">Select Your Region</label>
+  <select id="countries" name="regions" required="" class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+    {%for id,name in form.regions.field.choices %}
+    <option 
+   
+    value="{{id}}">{{name}}</option>
+{%endfor%}
+  </select>
+  
                     <div>
                         <label for="id_address" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.address.label}}</label>
                           
                        
                         {% render_field form.address  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
                    
-                     </div>  <div>
+                     </div>  
+                     
+                     
+                     
+                     <div>
                         <label for="id_email" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.email.label}}</label>
                           
                        
@@ -87,7 +100,14 @@
                         <p  class="mt-2 text-sm text-gainsboro dark:text-gray-400">Password Instructions    <button data-popover-target="id_new_password1_helptext" type="button" class="font-medium text-primary hover:underline dark:text-blue-500"> Check</button>.</p>
                         {% endif %}
                       </div>
-                    
+                      <div>
+                        <label for="id_webistelink" class="block mb-2 text-sm font-medium text-white dark:text-white">Link</label>
+                          
+                       
+                        {% render_field form.webistelink  class="bg-slategray border border-gray-700 text-white sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 "  %}
+                        <p  class="mt-2 text-sm text-gray-500">Add your website or Google business page link</p>
+                   
+                     </div>
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                           <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-primary rounded bg-gray-50 text-primary focus:ring-3 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="">

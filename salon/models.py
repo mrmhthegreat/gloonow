@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
-from authentication.models import UserProfile
+from authentication.models import UserProfile,Region
 from django.db.models import Q
 from django.urls import reverse
 from datetime import datetime,timedelta
@@ -128,6 +128,8 @@ class AdvanceRequest(models.Model):
     times=models.ManyToManyField(TimeAdvance,blank=True)
     extra = models.JSONField(null=True,)
     sended=models.BooleanField(default=False)
+    region=models.ForeignKey(Region,null=True,blank=True,on_delete=models.CASCADE)
+
     date_create=models.DateField(auto_now_add=True)
 
 

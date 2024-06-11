@@ -221,7 +221,23 @@
         ></ul>
         {% endcomment %}
         
-
+        <div>
+          <label
+          for="dropdownSearchButton2adv"
+          class="block mb-2 text-sm font-medium text-white dark:text-white"
+          >Select Your Region</label
+        >
+          <select id="countries" name="regions" required="" class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+          
+            {%for id,name in form.regions.field.choices %}
+            <option 
+           
+            value="{{id}}">{{name}}</option>
+        {%endfor%}
+          </select>
+      
+        </div>
+      
        
         <button
           type="button"
