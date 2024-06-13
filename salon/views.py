@@ -130,6 +130,7 @@ class mybookings(ListView):
             return [self.template_name]
         else:
             return ['404.html']
+        
 class mybooking(ListView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:

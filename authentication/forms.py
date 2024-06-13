@@ -107,10 +107,10 @@ class OwnerUserCreationForm(forms.ModelForm):
         print(user)
 
         password = self.cleaned_data.get("password")
-        rid = self.cleaned_data.get("regions")
         user.set_password(password)
         user.is_salonowner = True
         user.webistelink = self.cleaned_data.get("webistelink")
+        rid = self.cleaned_data.get("regions")
 
         r = Region.objects.get(id=rid.id)
         user.region = r
