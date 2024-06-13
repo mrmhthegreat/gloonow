@@ -11,6 +11,7 @@ urlpatterns = [
     path("termsandconditions/", views.terms, name="terms"),
     path("privacypolicy/", views.Privacy, name="privacy"),
     path("about/", views.about, name="about"),
+    path("perfectap/", views.adv_done, name="perfectap"),
     path("contactus/", views.contactus, name="contactus"),
     path("dashboard/mybooking/", views.mybooking.as_view(), name="dashboard"),
     path("dashboard/mypost/", views.mybookings.as_view(), name="ownerallpost"),

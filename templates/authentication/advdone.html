@@ -1,0 +1,41 @@
+
+
+{% extends "_base.html" %}{% load static %} 
+{% block title %}   Verification Done! {% endblock %}
+
+{% block content %}
+
+
+<section class="h-screen  [background:linear-gradient(89.61deg,_#203040_35.42%,#203040C9_50.52%,#25374A98_65.11%,#25374A98_78.13%,#25374A73)]">
+
+    <div class="flex flex-col items-center justify-center px-6 py-8  mq825:px-0 mx-auto md:h-screen lg:py-0">
+        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white dark:text-white">
+            <img class="w-8 h-8 mr-2"  src="{{about.logoimage.url}}" alt="{{about.company}}">
+            {{about.company}}    
+        </a>
+        <div class="w-full bg-bg2  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+               
+               
+                
+                <div class="relative text-white leading-[27.2px] mb-2">
+                    We have received your request. We’ll let you know if we find a perfect appointment for you
+                      
+
+                    <a target="_blank" class="w-full block mt-2 text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" href='{%url 'index' %}'>Thanks</a>
+            </div>
+            </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+  {%endblock content%}

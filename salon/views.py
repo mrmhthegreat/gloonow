@@ -383,6 +383,9 @@ def addAdvance(request):
             date =form.cleaned_data.get('datesadv')
             
 
-        return redirect('index')
+        return redirect('perfectap')
     else:
         return render("404.html")
+def adv_done(request):
+    abs=AboutusUs.objects.first()
+    return render(request, 'authentication/advdone.html',{'about':abs})
