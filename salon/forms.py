@@ -314,7 +314,7 @@ class AdvancePostForm(forms.ModelForm):
         post.extra = data
         post.email = email
         post.name = name
-        r = Region.objects.get(id=rid)
+        r = Region.objects.get(id=rid.id)
         post.region = r
         post.slug = f"{name}  {email } From {dates[0]} To {dates[-1]}"
         slugify_instance(post)

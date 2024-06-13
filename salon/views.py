@@ -381,8 +381,7 @@ def addAdvance(request):
             form.save(request)
             selection =form.cleaned_data.get('servicesadv')
             date =form.cleaned_data.get('datesadv')
-            print(selection)
-            print(date)
+            
 
         return redirect('index')
     else:
