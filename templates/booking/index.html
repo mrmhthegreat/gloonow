@@ -14,6 +14,9 @@
 />
 {% endblock style %}
 {% block content %}
+{% include "howitwork.html" %}
+<div class='mt-12 p-12'></div>
+
 {% include "horeero.html" with hasbutton=True about=about%}
 {% include "searchcomponent.html" with form=froms.dates %}
 
@@ -38,7 +41,6 @@
   <div
     class="text-burlywood-100 font-semibold mq450:text-burlywood-100 text-xl mq450:leading-[21px]"
   >
-  Can’t find
     <div
     class="flex flex-col items-start justify-start pt-0 px-0 pb-[22.40000000000009px] box-border gap-[53.6px_0px] max-w-full text-base text-gainsboro mq925:gap-[27px_0px]"
   >
@@ -80,8 +82,7 @@
 </div>
 
 
-<div class='mt-12 p-12'></div>
-{% include "howitwork.html" %}
+
 <div class='mt-12 p-12'></div>
 
          

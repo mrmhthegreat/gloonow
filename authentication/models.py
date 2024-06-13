@@ -69,4 +69,8 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
             'access': str(refresh.access_token)
         }
     def save(self, *args, **kwargs):
+        if self.webistelink !=None:
+
+            self.webistelink=self.webistelink if self.webistelink.startswith("https://") else f"https://{self.webistelink}"
+
         super().save(*args, **kwargs)

@@ -4,6 +4,8 @@ from django.views import View
 from django.utils.text import slugify
 from payment.models import Wallet
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+from django.contrib.auth.views import redirect_to_login
+from django.urls import reverse_lazy
 
 from django.utils.decorators import method_decorator
 from glow.models import AboutusUs
@@ -135,6 +137,10 @@ class bookings(View,LoginRequiredMixin):
         mo=BookingPost.objects.get(slug=slug)
         service=request.POST.get('services')
         print(service)
+        if not request.user.is_authenticated:
+            messages.warning(request,'Login First')
+
+            return redirect_to_login(self.request.get_full_path(), reverse_lazy('singin'))
         if  request.user.is_salonowner or not self.request.user.is_authenticated:
             messages.warning(request,'You Can not Book Register As Normal User')
             context={'post':mo}

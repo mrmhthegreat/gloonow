@@ -209,7 +209,16 @@ class userUpdateView(SuccessMessageMixin,UpdateView):
         return super().dispatch(request, *args, **kwargs)
     def get_object(self, queryset=None): 
         return self.request.user
-    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        success_message = "Updated"
+        rid = self.request.POST.get("regions")
+        r = Region.objects.get(id=rid)
+        self.request.user.region = r
+        self.request.user.save()
+        if success_message:
+            messages.success(self.request, success_message)
+        return response
     # def save(self,request,commit=False):
     #     # Sets username to email before saving
     #     user = super().save(commit=False)
