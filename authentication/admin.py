@@ -1,11 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import UserProfile,Region
+from .models import UserProfile,Region,SaloonTypes
 @admin.register(Region)
 class contactUs_admin(admin.ModelAdmin):
     list_display=['name']
   
-    search_fields = ["email",'first_name']
+    search_fields = ["email"]
+@admin.register(SaloonTypes)
+class contactUs_admin(admin.ModelAdmin):
+    list_display=['name','perority']
+  
+    search_fields = ["name"]
 @admin.register(UserProfile)
 class CustomUserAdmin(UserAdmin):
     list_display = ["email",'first_name','last_name', "email_is_verified",'is_salonowner']

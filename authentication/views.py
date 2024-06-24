@@ -116,6 +116,7 @@ def verify_email_done(request):
         return redirect('index')
     return render(request, 'authentication/verfiy_done.html',{'about':abs})
 
+
 def verify_email_confirm(request, uidb64, token):
     abs=AboutusUs.objects.first()
     try:

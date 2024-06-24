@@ -14,6 +14,15 @@ from phonenumber_field.modelfields import PhoneNumberField
 from .usermanager import CustomUserManager
 AUTH_PROVIDERS = {'google': 'google',
                   'email': 'email'}
+
+class SaloonTypes(models.Model):
+    name = models.CharField(max_length=1000)
+   
+    perority = models.IntegerField( default=0,null=False,blank=False)
+    class Meta:
+        ordering = ['-perority']
+    def __str__(self):
+        return self.name
 class Region(models.Model):
     name = models.CharField(max_length=700)
     def __str__(self):

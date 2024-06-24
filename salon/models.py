@@ -3,10 +3,11 @@ from django.utils import timezone
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
-from authentication.models import UserProfile,Region
+from authentication.models import UserProfile,Region,SaloonTypes
 from django.db.models import Q
 from django.urls import reverse
 from datetime import datetime,timedelta
+
 class Services(models.Model):
     name = models.CharField(max_length=255)
    
@@ -16,7 +17,8 @@ class Services(models.Model):
     def __str__(self):
         return self.name
 
-
+    def __str__(self):
+        return self.name
 class TimeAdvance(models.Model):
     name = models.CharField(max_length=255)
     starttime=models.TimeField(null=True)
@@ -40,27 +42,36 @@ class BookingPostQuerySet(models.QuerySet):
             
         return qs.distinct()
           
+    def search2(self,regions,type,active=True):
+        current_time = datetime.now().replace(second=0, microsecond=0)
+        
+        v=current_time-timedelta(days = 1)
+        
+        lookup=Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        
+        qs=self.filter(lookup)
             
-    def filterspecfice(self,date,services,active=True):
+        return qs.distinct() 
+    def filterspecfice(self,date,services,regions,type,active=True):
 
-        lookup=Q(bookdate=date)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        lookup=Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdate=date)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         qs=self.filter(lookup)
             
         return qs.distinct()
      
-    def filterspecficesv(self,services,active=True):
+    def filterspecficesv(self,services,regions,type, active=True):
         current_time = datetime.now().replace(second=0, microsecond=0)
         
-        lookup=Q(bookdatetime__gte=current_time)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        lookup= Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdatetime__gte=current_time)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         
         
         qs=self.filter(lookup)
             
         return qs.distinct()
-    def filterdatespecficesv(self,services,active=True):
+    def filterdatespecficesv(self,services,regions,type,active=True):
         current_time = datetime.now().replace(second=0, microsecond=0,day=services.day,year=services.year,month=services.month)
 
-        lookup=Q(bookdate=services)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        lookup=Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdate=services)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         qs=self.filter(lookup)
             
         return qs.distinct()
@@ -72,12 +83,14 @@ class BookingPostManger(models.Manager):
 
     def search(self,active=True):
         return self.get_queryset().search(active=active)
-    def filterspecfice(self,query,services,active=True):
-        return self.get_queryset().filterspecfice(query,services,active=active)
-    def filterspecficesv(self,services,active=True):
-        return self.get_queryset().filterspecficesv(services,active=active)
-    def filterdatespecficesv(self,services,active=True):
-        return self.get_queryset().filterdatespecficesv(services,active=active)
+    def search2(self,region,type,active=True):
+        return self.get_queryset().search2(region,type,active=active)
+    def filterspecfice(self,query,services,region,type,active=True):
+        return self.get_queryset().filterspecfice(query,services,region,type,active=active)
+    def filterspecficesv(self,services,region,type,active=True):
+        return self.get_queryset().filterspecficesv(services,region,type,active=active)
+    def filterdatespecficesv(self,services,region,type,active=True):
+        return self.get_queryset().filterdatespecficesv(services,region,type,active=active)
 class BookingPost(models.Model):
     slug=models.SlugField(blank=True,null=True,unique=True,max_length=1000)
     services=models.ManyToManyField(Services,blank=True)
@@ -91,7 +104,7 @@ class BookingPost(models.Model):
     is_active=models.BooleanField(default=False)
     is_book=models.BooleanField(default=False)
     is_hide=models.BooleanField(default=False)
-
+    salontype=models.ForeignKey(SaloonTypes,null=True,blank=True,on_delete=models.CASCADE)
     date_create=models.DateField(auto_now=True)
     bookdatetime=models.DateTimeField(null=True)
     bookdate=models.DateField(null=True)
@@ -129,6 +142,7 @@ class AdvanceRequest(models.Model):
     extra = models.JSONField(null=True,)
     sended=models.BooleanField(default=False)
     region=models.ForeignKey(Region,null=True,blank=True,on_delete=models.CASCADE)
+    salontype=models.ForeignKey(SaloonTypes,null=True,blank=True,on_delete=models.CASCADE)
 
     date_create=models.DateField(auto_now_add=True)
 

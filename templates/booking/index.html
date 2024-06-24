@@ -17,7 +17,7 @@
 
 
 {% include "horeero.html" with hasbutton=True about=about%}
-{% include "searchcomponent.html" with form=froms.dates %}
+{% include "serachbasic.html" with form=froms.dates %}
 
 
 <div class='mt-12 p-12'></div>
@@ -183,7 +183,7 @@ function myfun(){
 const selectedItemsContainer = document.getElementById("datePickeradv").value;
 const selectedItemsContainer2 = document.getElementById("id_email").value;
 const selectedItemsContainer3= document.getElementById("id_name").value;
-  const selectedItems = Array.from(
+const selectedItems = Array.from(
     document.querySelectorAll('input[name="timesadv"]:checked')
   )
    if (!validateEmail(selectedItemsContainer2)) {

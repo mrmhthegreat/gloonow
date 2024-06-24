@@ -1,6 +1,6 @@
 from django import forms
 
-from authentication.models import Region
+from authentication.models import Region, SaloonTypes
 from salon.models import BookBy, BookingPost, TimeAdvance, AdvanceRequest, Services
 from datetime import datetime
 from django.db.models import Q
@@ -20,6 +20,11 @@ class FilterBook(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         required=False,
     )
+    saloontype = forms.ModelChoiceField(
+        queryset=SaloonTypes.objects.all(),
+        empty_label="Looking For",
+        widget=forms.Select,
+    )
     regions = forms.ModelChoiceField(
         queryset=Region.objects.all(),
         empty_label="Select Your Region",
@@ -29,54 +34,8 @@ class FilterBook(forms.Form):
 
     def clean(self, *args, **kwargs):
         cleaned_data = super(FilterBook, self).clean(*args, **kwargs)
-        services = cleaned_data.get("services")
-        dates = cleaned_data.get("dates")
+
         return cleaned_data
-
-    def filter_queryset(self, request, queryset):
-        selection = self.form.cleaned_data.get("services")
-        regions = self.form.cleaned_data.get("regions")
-        rd = Region.objects.get(id=regions)
-
-        date = self.form.cleaned_data.get("dates")
-        if selection:
-            if date:
-                choice_date = datetime.strptime(date.strip(), "%d %b %Y")
-
-                lookup = (
-                    Q(region__name=rd.name)
-                    & Q(bookdate=choice_date)
-                    & Q(services__in=[x.id for x in selection])
-                    & Q(is_active=True)
-                    & Q(is_hide=False)
-                    & Q(is_book=False)
-                )
-
-                return queryset.filter(lookup).order_by("user__rating")
-            else:
-                lookup = (
-                    Q(region__name=rd.name)
-                    & Q(services__in=[x.id for x in selection])
-                    & Q(is_active=True)
-                    & Q(is_hide=False)
-                    & Q(is_book=False)
-                )
-
-                return queryset.filter(lookup).order_by("user__rating")
-        if date:
-
-            choice_date = datetime.strptime(date.strip(), "%d %b %Y")
-            lookup = (
-                Q(region__name=rd.name)
-                & Q(bookdate=choice_date)
-                & Q(is_active=True)
-                & Q(is_hide=False)
-                & Q(is_book=False)
-            )
-
-            return queryset.filter(lookup).order_by("user__rating")
-
-        return queryset
 
 
 class BookingPostForm(forms.ModelForm):
@@ -85,6 +44,11 @@ class BookingPostForm(forms.ModelForm):
     times = forms.TimeField(label="Times")
     services = forms.ModelMultipleChoiceField(
         queryset=Services.objects.all(), widget=forms.CheckboxSelectMultiple
+    )
+    saloontype = forms.ModelChoiceField(
+        queryset=SaloonTypes.objects.all(),
+        empty_label="Looking For",
+        widget=forms.Select,
     )
 
     def __init__(self, *args, **kwargs):
@@ -99,6 +63,7 @@ class BookingPostForm(forms.ModelForm):
             "title",
             "message",
             "services",
+            "saloontype",
             "dates",
             "times",
         ]
@@ -131,6 +96,9 @@ class BookingPostForm(forms.ModelForm):
         ).replace(second=0, microsecond=0)
         if choice_time < current_time:
             self.add_error("times", "Error Times")
+        type = self.cleaned_data.get("saloontype")
+        if type == None:
+            self.add_error("saloontype", "Select Type")
 
         return cleaned_data
 
@@ -144,6 +112,7 @@ class BookingPostForm(forms.ModelForm):
         dates = dates.strip()
 
         time_obj = datetime.strptime(b, "%H:%M")
+        type = self.cleaned_data.get("saloontype")
 
         hour12 = time_obj.strftime("%I:%M %p")
         time_obj2 = datetime.strptime(hour12, "%I:%M %p")
@@ -162,6 +131,10 @@ class BookingPostForm(forms.ModelForm):
         post.bookdate = choice_date
         post.bookdatetime = datetimeobj
         post.booktime = time_obj2
+
+        post.salontype = type
+
+        post.user = request.user
         post.user = request.user
         post.t = request.user
         post.is_active = True
@@ -183,10 +156,14 @@ class BookingPostForm(forms.ModelForm):
 
         # post.services=request.true
         rd = request.user.region
-        
 
-        lookup =Q(region__name=rd.name)& Q(extra__dates__icontains=dates) & Q(
-            services__in=[x.id for x in services]
+        typeobj = SaloonTypes.objects.get(id=type.id)
+
+        lookup = (
+            Q(region__name=rd.name)
+            & Q(salontype__name=typeobj.name)
+            & Q(extra__dates__icontains=dates)
+            & Q(services__in=[x.id for x in services])
         )
         a = AdvanceRequest.objects.filter(
             lookup,
@@ -202,7 +179,7 @@ class BookingPostForm(forms.ModelForm):
                 j = i.services.contains(x)
                 if j:
                     c = c + 1
-            if count == c:
+            if count >= c:
                 if issendto.count(i.email) > 0:
                     pass
                 else:
@@ -222,23 +199,23 @@ class BookingPostForm(forms.ModelForm):
                 {
                     "request": request,
                     "name": i.name,
-                    "user2": post.saloon,
-                    "urltopost": post.get_absolute_url(),
-                    "date": post.date,
+                    "user2": post.user,
+                    "urltopost": 'https://glo-now.com'+post.get_absolute_url(),
+                    "date": post.bookdatetime,
                     "about": abs,
                     "domain": current_site.domain,
-                    "myser": ",".join([x.name for x in i.services]),
-                    "time": post.time,
+                    "myser": ",".join([x.name for x in i.services.all()]),
+                    "time": post.bookdatetime,
                     "address": post.address,
                     "services": ",".join([x.name for x in post.services.all()]),
-                    "salon": post.saloon.company,
+                    "salon": post.user.company,
                     "domain": current_site.domain,
-                    "number": post.saloon.phone_number,
-                    "mail": post.saloon.email,
+                    "number": post.user.phone_number,
+                    "mail": post.user.email,
                 },
             )
 
-            email = EmailMessage(subject, message, to=[i.email.email])
+            email = EmailMessage(subject, message, to=[i.email])
 
             email.content_subtype = "html"
             Util.send_email(email)
@@ -262,12 +239,18 @@ class AdvancePostForm(forms.ModelForm):
         empty_label="Select Your Region",
         widget=forms.Select,
     )
+    saloontype = forms.ModelChoiceField(
+        queryset=SaloonTypes.objects.all(),
+        empty_label="Looking For",
+        widget=forms.Select,
+    )
+
 
     # Always return a value to use as the new cleaned data, even if
     # this method didn't change it.
     class Meta:
         model = AdvanceRequest
-        fields = ["servicesadv", "timesadv", "datesadv", "name", "email", "regions"]
+        fields = ["servicesadv", "timesadv", "datesadv", "name", "email", "regions","saloontype"]
 
     def clean(self, *args, **kwargs):
         cleaned_data = super(AdvancePostForm, self).clean(*args, **kwargs)
@@ -304,6 +287,7 @@ class AdvancePostForm(forms.ModelForm):
         services = self.cleaned_data.get("servicesadv")
         times = self.cleaned_data.get("timesadv")
         rid = self.cleaned_data.get("regions")
+        type = self.cleaned_data.get("saloontype")
         email = self.cleaned_data.get("email")
         name = self.cleaned_data.get("name")
         dates = [x.strip() for x in dates]
@@ -315,7 +299,9 @@ class AdvancePostForm(forms.ModelForm):
         post.email = email
         post.name = name
         r = Region.objects.get(id=rid.id)
+        t = SaloonTypes.objects.get(id=type.id)
         post.region = r
+        post.salontype = t
         post.slug = f"{name}  {email } From {dates[0]} To {dates[-1]}"
         slugify_instance(post)
         post.save()

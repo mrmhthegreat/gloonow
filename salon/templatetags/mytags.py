@@ -154,6 +154,10 @@ def isafter(time,date):
     else: 
         False
                    
-                
+@register.filter()
+def isqual(a,b):
+
+    return a==b
+                            
 
 

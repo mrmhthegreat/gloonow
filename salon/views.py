@@ -18,7 +18,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import  Sum
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from authentication.models import UserProfile
+from authentication.models import UserProfile,Region, SaloonTypes
 from glow.models import ContactUs,AboutusUs,AppReview
 from salon.custommiz import  custom_user_passes_test_mixin
 
@@ -209,17 +209,36 @@ class PostListView( FormMixin,ListView):
             if form.is_valid():
                 selection =form.cleaned_data.get('services')
                 date =form.cleaned_data.get('dates')
+                regions = form.cleaned_data.get("regions")
+                type = form.cleaned_data.get("saloontype")
                 if(date and selection ):
                     ct=datetime.strptime(date.strip(),'%d %b %Y')
+                    print("ddsdf")
+                    print(ct)
+                    print(selection)
+                    print(regions)
+                    print(type)
 
-                    queryset=BookingPost.objects.filterspecfice(ct,selection).order_by("-user__rating").order_by('bookdatetime')
+                    queryset=BookingPost.objects.filterspecfice(ct,selection,regions,type).order_by("-user__rating").order_by('bookdatetime')
                 elif(selection):
-                    queryset = BookingPost.objects.filterspecficesv(selection).order_by("-user__rating").order_by('bookdatetime')
+                    print("ddsdf")
+                    print(regions)
+                    print(type)
+
+                    queryset = BookingPost.objects.filterspecficesv(selection,regions,type).order_by("-user__rating").order_by('bookdatetime')
                 elif(date):
                     ct=datetime.strptime(date.strip(),'%d %b %Y')
 
-                    queryset = BookingPost.objects.filterdatespecficesv(ct).order_by("-user__rating").order_by('bookdatetime')
-       
+                    queryset = BookingPost.objects.filterdatespecficesv(ct,regions,type).order_by("-user__rating").order_by('bookdatetime')
+        elif self.request.POST.get("regions"):
+            form = FilterBook(self.request.POST)
+        
+
+            if form.is_valid():
+                regions = form.cleaned_data.get("regions")
+                type = form.cleaned_data.get("saloontype")
+                queryset=BookingPost.objects.search2(regions,type).order_by("-user__rating").order_by('bookdatetime')
+
         return queryset
     
     def post(self, request, *args, **kwargs):
@@ -236,6 +255,15 @@ class PostListView( FormMixin,ListView):
         if self.request.GET.get("services"):
 
             form = FilterBook(self.request.GET)
+        if self.request.POST.get("regions"):
+            form = FilterBook(self.request.POST)
+            if form.is_valid():
+                regions = form.cleaned_data.get("regions")
+                type = form.cleaned_data.get("saloontype")
+                context['regions'] = regions # use from mixin instead manual init
+                context['type'] = type # use from mixin instead manual init
+
+
         context['forms'] = form # use from mixin instead manual init
         context['about'] = ab # use from mixin instead manual init
         return context
