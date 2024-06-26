@@ -20,11 +20,6 @@ class FilterBook(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         required=False,
     )
-    saloontype = forms.ModelChoiceField(
-        queryset=SaloonTypes.objects.all(),
-        empty_label="Looking For",
-        widget=forms.Select,
-    )
     regions = forms.ModelChoiceField(
         queryset=Region.objects.all(),
         empty_label="Select Your Region",
@@ -45,12 +40,6 @@ class BookingPostForm(forms.ModelForm):
     services = forms.ModelMultipleChoiceField(
         queryset=Services.objects.all(), widget=forms.CheckboxSelectMultiple
     )
-    saloontype = forms.ModelChoiceField(
-        queryset=SaloonTypes.objects.all(),
-        empty_label="Looking For",
-        widget=forms.Select,
-    )
-
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request", None)
         super(BookingPostForm, self).__init__(*args, **kwargs)
@@ -63,7 +52,6 @@ class BookingPostForm(forms.ModelForm):
             "title",
             "message",
             "services",
-            "saloontype",
             "dates",
             "times",
         ]
@@ -112,7 +100,6 @@ class BookingPostForm(forms.ModelForm):
         dates = dates.strip()
 
         time_obj = datetime.strptime(b, "%H:%M")
-        type = self.cleaned_data.get("saloontype")
 
         hour12 = time_obj.strftime("%I:%M %p")
         time_obj2 = datetime.strptime(hour12, "%I:%M %p")
@@ -131,12 +118,7 @@ class BookingPostForm(forms.ModelForm):
         post.bookdate = choice_date
         post.bookdatetime = datetimeobj
         post.booktime = time_obj2
-
-        post.salontype = type
-
         post.user = request.user
-        post.user = request.user
-        post.t = request.user
         post.is_active = True
         post.title = title
         post.slug = f"{request.user.company} For {dates}-{hour12}"
@@ -155,70 +137,71 @@ class BookingPostForm(forms.ModelForm):
         # for i in :
 
         # post.services=request.true
-        rd = request.user.region
+        if(request.user.type!=None and request.user.region!=None):
+            typeobj = request.user.type
+            rd = request.user.region
 
-        typeobj = SaloonTypes.objects.get(id=type.id)
-
-        lookup = (
-            Q(region__name=rd.name)
-            & Q(salontype__name=typeobj.name)
-            & Q(extra__dates__icontains=dates)
-            & Q(services__in=[x.id for x in services])
-        )
-        a = AdvanceRequest.objects.filter(
-            lookup,
-            times__starttime__lte=time_obj.time(),
-            times__endtime__gte=time_obj.time(),
-        ).distinct()
-        issendto = []
-        k = []
-        for i in a:
-            count = i.services.count()
-            c = 0
-            for x in services:
-                j = i.services.contains(x)
-                if j:
-                    c = c + 1
-            if count >= c:
-                if issendto.count(i.email) > 0:
-                    pass
-                else:
-                    issendto.append(i.email)
-                    k.append(i)
-
-        current_site = get_current_site(request)
-
-        subject = "New Booking Available"
-
-        abs = AboutusUs.objects.first()
-        current_site = get_current_site(request)
-
-        for i in k:
-            message = render_to_string(
-                "booking/email/advancebook.html",
-                {
-                    "request": request,
-                    "name": i.name,
-                    "user2": post.user,
-                    "urltopost": 'https://glo-now.com'+post.get_absolute_url(),
-                    "date": post.bookdatetime,
-                    "about": abs,
-                    "domain": current_site.domain,
-                    "myser": ",".join([x.name for x in i.services.all()]),
-                    "time": post.bookdatetime,
-                    "address": post.address,
-                    "services": ",".join([x.name for x in post.services.all()]),
-                    "salon": post.user.company,
-                    "domain": current_site.domain,
-                    "number": post.user.phone_number,
-                    "mail": post.user.email,
-                },
+            lookup = (
+                Q(region__name=rd.name)
+                & Q(salontype__name=typeobj.name)
+                & Q(extra__dates__icontains=dates)
+                & Q(services__in=[x.id for x in services])
             )
+        
+            a = AdvanceRequest.objects.filter(
+                lookup,
+                times__starttime__lte=time_obj.time(),
+                times__endtime__gte=time_obj.time(),
+            ).distinct()
+            issendto = []
+            k = []
+            for i in a:
+                count = i.services.count()
+                c = 0
+                for x in services:
+                    j = i.services.contains(x)
+                    if j:
+                        c = c + 1
+                if count >= c:
+                    if issendto.count(i.email) > 0:
+                        pass
+                    else:
+                        issendto.append(i.email)
+                        k.append(i)
 
-            email = EmailMessage(subject, message, to=[i.email])
+            current_site = get_current_site(request)
 
-            email.content_subtype = "html"
-            Util.send_email(email)
+            subject = "New Booking Available"
+
+            abs = AboutusUs.objects.first()
+            current_site = get_current_site(request)
+
+            for i in k:
+                message = render_to_string(
+                    "booking/email/advancebook.html",
+                    {
+                        "request": request,
+                        "name": i.name,
+                        "user2": post.user,
+                        "urltopost": 'https://glo-now.com'+post.get_absolute_url(),
+                        "date": post.bookdatetime,
+                        "about": abs,
+                        "domain": current_site.domain,
+                        "myser": ",".join([x.name for x in i.services.all()]),
+                        "time": post.bookdatetime,
+                        "address": post.address,
+                        "services": ",".join([x.name for x in post.services.all()]),
+                        "salon": post.user.company,
+                        "domain": current_site.domain,
+                        "number": post.user.phone_number,
+                        "mail": post.user.email,
+                    },
+                )
+
+                email = EmailMessage(subject, message, to=[i.email])
+
+                email.content_subtype = "html"
+                Util.send_email(email)
 
         return post
 

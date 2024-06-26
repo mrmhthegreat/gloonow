@@ -1,0 +1,27 @@
+
+<div
+  class="grid grid-cols-4 mt-5 sm:grid md:grid-cols-4 mq925:grid-cols-2 p-4 lg:grid-cols-2 container mx-auto gap-3"
+>
+
+{%for i in type%}
+
+  <div
+ onclick="btk('{{i.id}}');"   class="flex flex-col cursor-pointer  self-start sm:shrink-0 sm:grow sm:basis-0 w-4/5 mq925:w-11/12 md:w-11/12 p-5 hover:bg-primary   text-center bg-burlywood-100 rounded "
+  >
+   
+    <a href="{% url 'index' %}?q={{i.name}}" id="{{i.id}}"></a>
+<img class="mb-3 fill-white mx-auto" style="fill: green!important;" width="60" height="60" src="{{i.image.url}}" alt="image description">
+{% comment %} <svg class='mb-3 mx-auto text-center fill-white' width="50" height="60">       
+    <image  xlink:href="{{i.image.url}}" src="{{i.image.url}}" color="white" width="60" height="60"/>    
+</svg> {% endcomment %}
+    <h5 class="mb-2 font-bold  text-white">
+    Click Here for  {{i.name}}
+    </h5>
+  </div>
+ 
+ {%endfor%}
+ 
+
+ 
+</div>
+</div>

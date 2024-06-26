@@ -42,36 +42,46 @@ class BookingPostQuerySet(models.QuerySet):
             
         return qs.distinct()
           
-    def search2(self,regions,type,active=True):
+    def search2(self,type,active=True):
         current_time = datetime.now().replace(second=0, microsecond=0)
         
         v=current_time-timedelta(days = 1)
-        
-        lookup=Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        lookup=Q(user__type__name=type.name)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
         
         qs=self.filter(lookup)
             
         return qs.distinct() 
     def filterspecfice(self,date,services,regions,type,active=True):
+        if type!=None:
 
-        lookup=Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdate=date)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+            lookup=Q(user__region__name=regions.name)&Q(user__type__name=type.name)&Q(bookdate=date)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        else:
+            lookup=Q(user__region__name=regions.name)&Q(bookdate=date)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+
         qs=self.filter(lookup)
             
         return qs.distinct()
      
     def filterspecficesv(self,services,regions,type, active=True):
         current_time = datetime.now().replace(second=0, microsecond=0)
-        
-        lookup= Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdatetime__gte=current_time)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
-        
+        if type!=None:
+
+            lookup= Q(user__region__name=regions.name)&Q(user__type__name=type.name)&Q(bookdatetime__gte=current_time)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        else:
+            lookup= Q(user__region__name=regions.name)&Q(bookdatetime__gte=current_time)&Q(services__in=[x.id for x in services])&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+
         
         qs=self.filter(lookup)
             
         return qs.distinct()
     def filterdatespecficesv(self,services,regions,type,active=True):
         current_time = datetime.now().replace(second=0, microsecond=0,day=services.day,year=services.year,month=services.month)
+        if type!=None:
 
-        lookup=Q(user__region__name=regions.name)&Q(salontype__name=type.name)&Q(bookdate=services)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+            lookup=Q(user__region__name=regions.name)&Q(user__type__name=type.name)&Q(bookdate=services)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+        else:
+            lookup=Q(user__region__name=regions.name)&Q(bookdate=services)&Q(bookdatetime__gte=current_time)&Q(is_active=True)&Q(is_hide=False)&Q(is_book=False)
+
         qs=self.filter(lookup)
             
         return qs.distinct()
@@ -83,8 +93,8 @@ class BookingPostManger(models.Manager):
 
     def search(self,active=True):
         return self.get_queryset().search(active=active)
-    def search2(self,region,type,active=True):
-        return self.get_queryset().search2(region,type,active=active)
+    def search2(self,type,active=True):
+        return self.get_queryset().search2(type,active=active)
     def filterspecfice(self,query,services,region,type,active=True):
         return self.get_queryset().filterspecfice(query,services,region,type,active=active)
     def filterspecficesv(self,services,region,type,active=True):
@@ -104,7 +114,6 @@ class BookingPost(models.Model):
     is_active=models.BooleanField(default=False)
     is_book=models.BooleanField(default=False)
     is_hide=models.BooleanField(default=False)
-    salontype=models.ForeignKey(SaloonTypes,null=True,blank=True,on_delete=models.CASCADE)
     date_create=models.DateField(auto_now=True)
     bookdatetime=models.DateTimeField(null=True)
     bookdate=models.DateField(null=True)

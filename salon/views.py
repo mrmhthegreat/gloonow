@@ -32,9 +32,28 @@ def index(request):
     form=FilterBook()
     fom=AdvancePostForm()
     ab=AboutusUs.objects.first()
+    if request.GET.get('q')!=None:
+        name=request.GET.get('q')
+        try:
+            type=SaloonTypes.objects.get(name=name)
+            p=BookingPost.objects.search2(type).order_by("-user__rating").order_by('bookdatetime')[:10]
+            request.session["selected_type"] = name
+        
+        except Exception as e:
+            print(e)
+            pass
 
+        
     context={'products':p,'forms':form,'reviews':reviews,'about':ab,'formss':fom}
     return render(request, 'booking/index.html',context)
+def homepage(request):
+    
+    ab=AboutusUs.objects.first()
+    saloontypes=SaloonTypes.objects.all()
+    context={'about':ab,'type':saloontypes}
+
+    return render(request, 'booking/home.html',context)
+
 
 def terms(request):
     ab=AboutusUs.objects.first()
@@ -200,45 +219,41 @@ class PostListView( FormMixin,ListView):
     # ordering = "user__rating"
     # new method added ⬇️
     def get_queryset(self):
-      
+        # 
+    # request.session["selected_type"] = "Alla"
         queryset=BookingPost.objects.search().order_by("-user__rating").order_by('bookdatetime')
+        name="all"
+        if self.request.session.get("selected_type"):
+            name=self.request.session.get("selected_type",'A')
+            try:
+                type=SaloonTypes.objects.get(name=name)
+                queryset=BookingPost.objects.search2(type).order_by("-user__rating").order_by('bookdatetime')[:10]
+            except Exception as e:
+                print(e)
+                pass
         if self.request.POST.get("services")or self.request.POST.get("dates"):
             form = FilterBook(self.request.POST)
-        
 
             if form.is_valid():
                 selection =form.cleaned_data.get('services')
                 date =form.cleaned_data.get('dates')
                 regions = form.cleaned_data.get("regions")
-                type = form.cleaned_data.get("saloontype")
+                type=None
+                try:
+                    type=SaloonTypes.objects.get(name=name)
+
+                except Exception as e:
+                    pass
                 if(date and selection ):
                     ct=datetime.strptime(date.strip(),'%d %b %Y')
-                    print("ddsdf")
-                    print(ct)
-                    print(selection)
-                    print(regions)
-                    print(type)
-
                     queryset=BookingPost.objects.filterspecfice(ct,selection,regions,type).order_by("-user__rating").order_by('bookdatetime')
                 elif(selection):
-                    print("ddsdf")
-                    print(regions)
-                    print(type)
 
                     queryset = BookingPost.objects.filterspecficesv(selection,regions,type).order_by("-user__rating").order_by('bookdatetime')
                 elif(date):
                     ct=datetime.strptime(date.strip(),'%d %b %Y')
-
                     queryset = BookingPost.objects.filterdatespecficesv(ct,regions,type).order_by("-user__rating").order_by('bookdatetime')
-        elif self.request.POST.get("regions"):
-            form = FilterBook(self.request.POST)
         
-
-            if form.is_valid():
-                regions = form.cleaned_data.get("regions")
-                type = form.cleaned_data.get("saloontype")
-                queryset=BookingPost.objects.search2(regions,type).order_by("-user__rating").order_by('bookdatetime')
-
         return queryset
     
     def post(self, request, *args, **kwargs):
@@ -255,15 +270,7 @@ class PostListView( FormMixin,ListView):
         if self.request.GET.get("services"):
 
             form = FilterBook(self.request.GET)
-        if self.request.POST.get("regions"):
-            form = FilterBook(self.request.POST)
-            if form.is_valid():
-                regions = form.cleaned_data.get("regions")
-                type = form.cleaned_data.get("saloontype")
-                context['regions'] = regions # use from mixin instead manual init
-                context['type'] = type # use from mixin instead manual init
-
-
+        
         context['forms'] = form # use from mixin instead manual init
         context['about'] = ab # use from mixin instead manual init
         return context

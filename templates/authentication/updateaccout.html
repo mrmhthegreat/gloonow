@@ -1,5 +1,6 @@
 {% extends "dashboard.html" %}
 {% load widget_tweaks %}
+{% load mytags %}
 
 {% load static %}
 {% block title %} Update Account {% endblock %}
@@ -114,9 +115,19 @@
                               {%for id,name in form.regions.field.choices %}
                               <option 
                              
-                              value="{{id}}">{{name}}</option>
+                              value="{{id}}" {%if id|isqual:request.user.region.id%}selected{%endif%}>{{name}}</option>
                           {%endfor%}
                             </select>
+{%if request.user.is_salonowner%}
+                            <label for="saloontype" class="block mb-2 text-sm font-medium text-white dark:text-white">Type</label>
+                            <select id="saloontype" name="saloontype" required="" class="bg-slategray text-left border border-gray-700 text-white p-2 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+                              {%for id,name in form.saloontype.field.choices %}
+                              <option 
+                             
+                              value="{{id}}" {%if id|isqual:request.user.type.id%}selected{%endif%}>{{name}}</option>
+                          {%endfor%}
+                            </select>
+                            {%endif%}
                             <div>
                               <label for="id_address" class="block mb-2 text-sm font-medium text-white dark:text-white">{{form.address.label}}</label>
                           

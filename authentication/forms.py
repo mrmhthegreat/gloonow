@@ -2,7 +2,7 @@ from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-from .models import UserProfile, Region
+from .models import UserProfile, Region,SaloonTypes
 from django.contrib.auth import authenticate, login
 
 
@@ -75,7 +75,11 @@ class OwnerUserCreationForm(forms.ModelForm):
         queryset=Region.objects.all(),
         widget=forms.Select,
     )
-
+    saloontype = forms.ModelChoiceField(
+        queryset=SaloonTypes.objects.all(),
+        empty_label="Type",
+        widget=forms.Select,
+    )
     class Meta:
         model = UserProfile
         fields = [
@@ -88,6 +92,7 @@ class OwnerUserCreationForm(forms.ModelForm):
             "profile_image",
             "password",
             "regions",
+            "saloontype",
             "webistelink",
         ]
 
@@ -113,8 +118,11 @@ class OwnerUserCreationForm(forms.ModelForm):
         rid = self.cleaned_data.get("regions")
 
         r = Region.objects.get(id=rid.id)
-        user.region = r
 
+        user.region = r
+        if self.cleaned_data.get("saloontype")!=None:
+            user.type=self.cleaned_data.get("saloontype")
+        
         user.save()
         new_user = authenticate(email=user.email, password=password)
         login(request, new_user)
@@ -133,7 +141,11 @@ class OwnerUserChangeForm(forms.ModelForm):
             "invalid": "please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"
         },
     )
-
+    saloontype = forms.ModelChoiceField(
+        queryset=SaloonTypes.objects.all(),
+        empty_label="Type",
+        widget=forms.Select,
+    )
     regions = forms.ModelChoiceField(
         empty_label="Select Your Region",
         queryset=Region.objects.all(),
@@ -150,6 +162,7 @@ class OwnerUserChangeForm(forms.ModelForm):
             "phone_number",
             "profile_image",
             "regions",
+            "saloontype",
             "webistelink",
         ]
 

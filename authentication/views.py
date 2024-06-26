@@ -16,7 +16,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib import messages
-from .models import Region, UserProfile
+from .models import Region, UserProfile,SaloonTypes
 from django.contrib.auth.decorators import login_required
 from django.utils.encoding import smart_str, smart_bytes
 from django.views.generic.edit import UpdateView ,FormView
@@ -214,7 +214,11 @@ class userUpdateView(SuccessMessageMixin,UpdateView):
         response = super().form_valid(form)
         success_message = "Updated"
         rid = self.request.POST.get("regions")
+        type = self.request.POST.get("saloontype")
         r = Region.objects.get(id=rid)
+        if type!=None:
+            ty = SaloonTypes.objects.get(id=type)
+            self.request.user.type=ty
         self.request.user.region = r
         self.request.user.save()
         if success_message:

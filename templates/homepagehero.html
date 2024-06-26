@@ -1,0 +1,49 @@
+{% load static %}
+
+
+<section
+  class="mb-10 p-8 mt-5 container mx-auto  text-white font-montserrat"
+>
+  
+    <div
+      class="flex flex-col items-center justify-start gap-[7px_0px] max-w-full"
+    >
+      <div
+        class="flex flex-row items-end justify-start gap-[0px_8px] max-w-full"
+      >
+       
+      </div>
+      <b
+        class="self-stretch text-white font-montserrat  tracking-[-0.01em] leading-[115%] text-21xl capitalize font-semibold mq450:text-11xl mq450:leading-[39px] mq925:text-21xl text-light z-[5] mq825:leading-[64px] mq450:leading-[48px]"
+      >
+        <p class="m-0">Half Price Hair & Beauty services in your city!!</p>
+      </b>
+    </div>
+    <div
+      class="self-stretch relative text-lg leading-[170%] text-mintcream z-[5]"
+    >
+      
+      <div
+        class=" leading-[27.2px] text-gainsboro"
+      >
+      Pay a $10 booking fee to get 50% OFF at the best hair salons & barbershops
+      </div>
+      
+    </div>
+    {%if not has%}
+    {% include "homepagebuttons.html" %}
+    {%endif%}
+{%if hasbutton%}
+  
+  {%endif%}
+  </div>
+  {% comment %}
+  <div
+    class="heading-container absolute flex justify-center items-center w-full"
+  >
+    <h1 class="text-5xl text-white">Your dream vacation starts here</h1>
+  </div>
+  {% endcomment %}
+</section>
+<div class="mb-10 p-8 container mx-auto  text-white font-montserrat">
+</div>

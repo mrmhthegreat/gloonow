@@ -3,8 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("posts", views.PostListView.as_view(), name="postlist"),
-    path("", views.index, name="index"),
+    path("posts/", views.PostListView.as_view(), name="postlist"),
+    path("search/", views.index, name="index"),
+    path("", views.homepage, name="home"),
     path("addAdvance/", views.addAdvance, name="addAdvance"),
 
     

@@ -17,7 +17,7 @@ AUTH_PROVIDERS = {'google': 'google',
 
 class SaloonTypes(models.Model):
     name = models.CharField(max_length=1000)
-   
+    image = models.ImageField(blank=True,upload_to='profile',null=True,default='profile/capture.png')
     perority = models.IntegerField( default=0,null=False,blank=False)
     class Meta:
         ordering = ['-perority']
@@ -36,6 +36,7 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     company = models.CharField(max_length=120, null=True,blank=True,default='')
     rating = models.DecimalField(max_digits=2,default=0, null=True,blank=True,decimal_places=1)
     extra = models.JSONField(null=True)
+    type=models.ForeignKey(SaloonTypes,null=True,blank=True,on_delete=models.CASCADE)
     phone_number = PhoneNumberField(blank=True, unique=True,help_text="0064xxxxxxx format",error_messages={'invalid':"please reenter your number in 0064xxxxxxxxx format – e.g. 0064217774444"})
     first_name=models.CharField(max_length=120, null=False,blank=False,default='')
     last_name=models.CharField(max_length=120, null=True,blank=True,default='')

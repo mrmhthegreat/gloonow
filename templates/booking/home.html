@@ -1,0 +1,49 @@
+<!-- templates/index.html -->
+
+{% extends "_base.html" %}
+ {% load static %}
+{% load mytags %}
+{% block title %} {{about.company}} {% endblock %}
+
+{% block content %}
+
+
+{% include "homepagehero.html" with hasbutton=True about=about%}
+
+
+<div class='mt-12 p-12'></div>
+
+
+
+<div class="mx-auto p-5  container">
+
+</div>
+<div class="mx-auto p-5  container">
+
+
+
+</div>
+
+
+
+<div class='mt-12 p-12'></div>
+
+         
+
+
+
+
+{% include "foot.html" with about=about%}
+
+      {% endblock content %} {%block script%}
+ 
+ 
+     
+      <script src="{%static 'src/jquery.min.js' %}"></script>
+        <script>
+
+            function btk(e){
+const selectedItemsContainer = document.getElementById(e).click();
+            }
+        </script>
+  {%endblock script%}
