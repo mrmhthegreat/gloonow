@@ -84,10 +84,7 @@ class BookingPostForm(forms.ModelForm):
         ).replace(second=0, microsecond=0)
         if choice_time < current_time:
             self.add_error("times", "Error Times")
-        type = self.cleaned_data.get("saloontype")
-        if type == None:
-            self.add_error("saloontype", "Select Type")
-
+        
         return cleaned_data
 
     def save(self, request, commit=False):
